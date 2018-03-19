@@ -42,6 +42,7 @@ class DefaultController extends Controller
 			'formularioSubir'=>'application.modules.'.$this->module->id.'.controllers.acciones.FormularioSubirAction',
 			'subir'=>'application.modules.'.$this->module->id.'.controllers.acciones.SubirAction',
 			'formularioOpciones'=>'application.modules.'.$this->module->id.'.controllers.acciones.FormularioOpcionesAction',
+			'enviarCorreos'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarCorreosAction',
 		);
 	}
         
@@ -73,6 +74,11 @@ class DefaultController extends Controller
 			'allow', 
 			'actions' => array('guardarOpciones'),
 			'expression' => array(__CLASS__,'allowFomularioOpciones'),
+            ),
+			array(
+			'allow', 
+			'actions' => array('enviarCorreos'),
+			'expression' => array(__CLASS__,'allowEnviarCorreos'),
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -201,6 +207,42 @@ class DefaultController extends Controller
 				$criteria_log = new CDbCriteria();
 				$criteria_log->compare('modulo', $modulo);
 				$criteria_log->compare('accion', 'formularioOpciones'); //Cambiar esto cada ves que lo copie para una accion diferente
+				$accion_log = Acciones::model()->find($criteria_log);
+				$log = new Logs;
+				$log->accion = $accion_log->id;
+				$log->usuario = Yii::app()->user->id;
+				$log->save();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public function allowEnviarCorreos()
+	{
+		//Descomentar esta parte cuando ya hayan agregado el modulo
+		if(Yii::app()->user->name != "Guest"){
+			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
+			$criteria = new CDbCriteria();            
+			$modulo = 'Recordatorios';
+			$criteria->compare('perfil', $usuario->perfil);
+			$criteria->compare('modulo', $modulo);
+			$criteria->compare('accion', 'enviarCorreos');
+			$permisos = PerfilContenido::model()->find($criteria);
+			if(count($permisos) == 1)
+			{
+				$criteria_log = new CDbCriteria();
+				$criteria_log->compare('modulo', $modulo);
+				$criteria_log->compare('accion', 'enviarCorreos'); //Cambiar esto cada ves que lo copie para una accion diferente
 				$accion_log = Acciones::model()->find($criteria_log);
 				$log = new Logs;
 				$log->accion = $accion_log->id;
