@@ -27,7 +27,7 @@
 		Nombre de la sede:</br>
 		<p><?php echo $recordatorio['sede'] ?> </p><hr>
 		Nombre del servicio:</br>
-		<p><?php echo $recordatorio['servicio'] ?> </p><hr><br>
+		<p><?php //echo $recordatorio['servicio'] ?> </p><hr><br> 
 		<p> <?php echo $recordatorio['mensaje'] ?> </p><br>
 		<p> Nota, este mensaje se genero automaticamente por 
 		favor no responda </p>

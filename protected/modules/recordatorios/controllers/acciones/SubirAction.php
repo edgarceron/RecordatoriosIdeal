@@ -26,7 +26,9 @@ class SubirAction extends CAction
 					$linea = fgets($gestor);
 					$campos = explode(";",trim($linea));
 					if(count($campos)== 10){
-						if($campos[0] != 'No' && $campos[0] != null){
+						
+						if($this->verificarValidez($campos)){
+							$exitosas++;
 							//Se crea el modelo para guardar la información del recordatorio
 							$citas_recordatorios = new CitasRecordatorios;
 							$citas_recordatorios->nombre_paciente = $campos[1];
@@ -35,7 +37,7 @@ class SubirAction extends CAction
 							echo $fecha->format('Y-m-d H:i:s');
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
-							$citas_recordatorios->servicio = $campos[6];
+							//$citas_recordatorios->servicio = $campos[6];
 							$citas_recordatorios->mensaje = $campos[7];
 							$citas_recordatorios->correo = $campos[8];
 							$citas_recordatorios->telefono = $campos[9];
@@ -43,8 +45,12 @@ class SubirAction extends CAction
 							print_r($citas_recordatorios->getErrors());
 							echo "<br><br>";
 						}
+						else{
+							$fallidas++;
+						}
 					}	
-				}	
+				}
+				echo "Existosas: " . $exitosas . " Fallidas: " . $fallidas;
 			}	
 		}
 	}
@@ -62,6 +68,31 @@ class SubirAction extends CAction
 			}
 		}
 		return $nuevaFecha;
+	}
+	
+	public function verificarValidez($campos){
+		for($i = 1; $i<=7; $i++){
+			if(trim($campos[$i]) == ''){
+				return false;
+			}
+		}
+		
+		if( !(trim($campos[9]) == '' && trim($campos[8]) == '')){
+			
+			$telefono_correcto = true;
+			$email_correcto = true;
+			
+			if(!is_numeric($campos[9])){
+				$telefono_correcto = false;
+			}
+			if(!filter_var($campos[8], FILTER_VALIDATE_EMAIL)){
+				$email_correcto = false;
+			}
+			return ($telefono_correcto || $email_correcto);
+		}
+		else{
+			return false;
+		}
 	}
 }
 ?>
