@@ -24,7 +24,7 @@ class SubirAction extends CAction
 				
 				while(!feof($gestor)){
 					$linea = fgets($gestor);
-					$campos = explode(";",$linea);
+					$campos = explode(";",trim($linea));
 					if(count($campos)== 10){
 						if($campos[0] != 'No' && $campos[0] != null){
 							//Se crea el modelo para guardar la información del recordatorio
@@ -35,9 +35,10 @@ class SubirAction extends CAction
 							echo $fecha->format('Y-m-d H:i:s');
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
-							$citas_recordatorios->mensaje = $campos[6];
-							$citas_recordatorios->correo = $campos[7];
-							$citas_recordatorios->sede = $campos[8];
+							$citas_recordatorios->servicio = $campos[6];
+							$citas_recordatorios->mensaje = $campos[7];
+							$citas_recordatorios->correo = $campos[8];
+							$citas_recordatorios->telefono = $campos[9];
 							$citas_recordatorios->save();
 							print_r($citas_recordatorios->getErrors());
 							echo "<br><br>";

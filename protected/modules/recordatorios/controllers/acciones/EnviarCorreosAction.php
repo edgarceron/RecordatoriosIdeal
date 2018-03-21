@@ -1,4 +1,7 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+require 'vendor/autoload.php';
+
 class EnviarCorreosAction extends CAction
 {
 	
@@ -11,7 +14,7 @@ class EnviarCorreosAction extends CAction
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
 		
-		foreach($cita as $recordatorio){
+		foreach($citas as $recordatorio){
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
@@ -19,7 +22,6 @@ class EnviarCorreosAction extends CAction
 			}
 		}
 		
-        $this->controller->render('opciones',array('num_recordatorios' => $num_recordatorios));
     }
 	
 	/**
@@ -52,22 +54,37 @@ class EnviarCorreosAction extends CAction
 	 */
 	
 	public function enviarCorreo($recordatorio){
-		$mail = new JPhpMailer;
+		
+		$mail = new PHPMailer;
 		if(filter_var($recordatorio['correo'], FILTER_VALIDATE_EMAIL)){
 			$adjunto = $this->construirMensaje($recordatorio);
 			$mail->IsSMTP();
-			$mail->Host = 'smtp.googlemail.com:465';
-			$mail->SMTPSecure = "ssl";
+			$mail->Host = gethostbyname('smtp.gmail.com');
+			$mail->Port = 587;
+			$mail->SMTPDebug = 4;
+			$mail->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			$mail->SMTPSecure = "tls";
 			$mail->SMTPAuth = true;
-			$mail->Username = 'grupoingenieros.soluciones@gmail.com';
-			$mail->Password = 'Juan.890922';
-			$mail->SetFrom('miempresa@midominio.com', $info);
-			$mail->Subject = $estado;
+			$mail->Username = 'matsuurahana@gmail.com';
+			$mail->Password = 'yamashita.nanamI3191';
+			$mail->setFrom('miempresa@midominio.com', 'Recordatorio cita');
+			$mail->Subject = 'Recordatorio de cita ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
-			$mail->MsgHTML($adjunto);
-			$mail->AddAddress(Yii::app()->getSession()->get('Correo'), Yii::app()->user->name);	
-			$mail->AddBCC($recordatorio['correo'], $recordatorio['nombre_paciente']);
-			$mail->Send();
+			$mail->msgHTML($adjunto);
+			$mail->AddAddress($recordatorio['correo'], $recordatorio['nombre_paciente']);	
+			//$mail->AddBCC($recordatorio['correo'], $recordatorio['nombre_paciente']);
+			if(!$mail->send()) {
+			  echo '<br>Message was not sent.<br>';
+			  echo 'Mailer error: ' . $mail->ErrorInfo;
+			} else {
+			  echo '<br>Message has been sent.';
+			}
 			return true;
 		}
 		return false;
@@ -79,7 +96,7 @@ class EnviarCorreosAction extends CAction
 	 * @return String con el html de la pagina
 	 */
 	public function construirMensaje($recordatorio){
-		return $this->controller->renderPartial('plantillaCorreo', array('model' => $recordatorio));
+		return $this->controller->renderPartial('plantillaCorreo', array('recordatorio' => $recordatorio), true);
 	}
 }
 ?>
