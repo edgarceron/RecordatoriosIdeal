@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-03-2018 a las 03:35:02
+-- Tiempo de generación: 23-03-2018 a las 14:29:52
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.23
 
@@ -52,7 +52,8 @@ INSERT INTO `acciones` (`id`, `modulo`, `accion`, `ruta`) VALUES
 (12, 'recordatorios', 'index', 'application.modules.recordatorios.controllers.acciones.IndexAction'),
 (13, 'recordatorios', 'formularioSubir', 'application.modules.recordatorios.controllers.acciones.FormularioSubirAction'),
 (14, 'recordatorios', 'subir', 'application.modules.recordatorios.controllers.acciones.SubirAction'),
-(15, 'recordatorios', 'formularioOpciones', 'application.modules.recordatorios.controllers.acciones.FormularioOpcionesAction');
+(15, 'recordatorios', 'formularioOpciones', 'application.modules.recordatorios.controllers.acciones.FormularioOpcionesAction'),
+(16, 'recordatorios', 'enviarCorreos', 'application.modules.recordatorios.controllers.acciones.EnviarCorreosAction');
 
 -- --------------------------------------------------------
 
@@ -66,6 +67,7 @@ CREATE TABLE `citas_recordatorios` (
   `fecha` datetime NOT NULL,
   `nombre_profesional` varchar(30) NOT NULL,
   `direccion` varchar(100) NOT NULL,
+  `servicio` varchar(40) NOT NULL,
   `mensaje` text NOT NULL,
   `correo` varchar(255) DEFAULT NULL,
   `telefono` varchar(10) DEFAULT NULL,
@@ -76,10 +78,10 @@ CREATE TABLE `citas_recordatorios` (
 -- Volcado de datos para la tabla `citas_recordatorios`
 --
 
-INSERT INTO `citas_recordatorios` (`id`, `nombre_paciente`, `fecha`, `nombre_profesional`, `direccion`, `mensaje`, `correo`, `telefono`, `sede`) VALUES
-(1, 'Edgar Ceron', '2018-03-07 07:30:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', NULL, 'maurinin@yahoo.com'),
-(2, 'Nancy Holgin', '2018-03-07 07:50:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', NULL, 'maurinin@yahoo.com'),
-(3, 'Kristhian David', '2018-03-07 08:10:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', NULL, 'maurinin@yahoo.com');
+INSERT INTO `citas_recordatorios` (`id`, `nombre_paciente`, `fecha`, `nombre_profesional`, `direccion`, `servicio`, `mensaje`, `correo`, `telefono`, `sede`) VALUES
+(7, 'Edgar Ceron', '2018-03-07 07:30:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', 'maurinin@yahoo.com', '3176483290', NULL),
+(8, 'Nancy Holgin', '2018-03-07 07:50:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', 'maurinin@yahoo.com', '3176483290', NULL),
+(9, 'Kristhian David', '2018-03-07 08:10:00', 'OSCAR CONDE', 'CALLE 50 #10A-08', 'FISIATRIA', 'Presentar Documento de identidad, Autorizaci?n, Historia cl?nica, copago o cuota moderadora.  Llegar 15 minutos antes', 'maurinin@yahoo.com', '3176483290', NULL);
 
 -- --------------------------------------------------------
 
@@ -117,7 +119,68 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`ID`, `accion`, `usuario`, `fecha`) VALUES
-(1, 12, 1, '2018-03-15 02:30:12');
+(1, 12, 1, '2018-03-15 02:30:12'),
+(2, 12, 1, '2018-03-19 14:04:12'),
+(3, 14, 1, '2018-03-19 14:04:15'),
+(4, 12, 1, '2018-03-19 14:04:28'),
+(5, 12, 1, '2018-03-19 14:04:48'),
+(6, 14, 1, '2018-03-19 14:04:49'),
+(7, 16, 1, '2018-03-19 14:04:55'),
+(8, 16, 1, '2018-03-19 17:46:57'),
+(9, 16, 1, '2018-03-19 17:47:20'),
+(10, 16, 1, '2018-03-19 17:49:12'),
+(11, 12, 1, '2018-03-19 17:56:56'),
+(12, 14, 1, '2018-03-19 17:56:59'),
+(13, 14, 1, '2018-03-19 17:58:59'),
+(14, 14, 1, '2018-03-19 18:03:40'),
+(15, 14, 1, '2018-03-19 18:03:49'),
+(16, 14, 1, '2018-03-19 18:05:54'),
+(17, 14, 1, '2018-03-19 18:06:01'),
+(18, 16, 1, '2018-03-19 18:06:35'),
+(19, 16, 1, '2018-03-20 20:08:39'),
+(20, 16, 1, '2018-03-20 20:11:53'),
+(21, 16, 1, '2018-03-20 20:12:14'),
+(22, 16, 1, '2018-03-20 20:13:17'),
+(23, 16, 1, '2018-03-20 20:13:55'),
+(24, 16, 1, '2018-03-20 20:18:11'),
+(25, 16, 1, '2018-03-20 20:21:54'),
+(26, 16, 1, '2018-03-20 22:37:59'),
+(27, 16, 1, '2018-03-20 22:38:26'),
+(28, 16, 1, '2018-03-20 22:38:41'),
+(29, 16, 1, '2018-03-20 22:41:48'),
+(30, 16, 1, '2018-03-20 22:43:08'),
+(31, 16, 1, '2018-03-20 22:45:54'),
+(32, 16, 1, '2018-03-20 22:47:46'),
+(33, 16, 1, '2018-03-20 22:48:02'),
+(34, 16, 1, '2018-03-20 22:49:24'),
+(35, 16, 1, '2018-03-20 22:50:06'),
+(36, 16, 1, '2018-03-20 23:07:27'),
+(37, 16, 1, '2018-03-20 23:09:21'),
+(38, 16, 1, '2018-03-20 23:09:37'),
+(39, 16, 1, '2018-03-20 23:17:10'),
+(40, 16, 1, '2018-03-20 23:18:31'),
+(41, 16, 1, '2018-03-20 23:21:50'),
+(42, 16, 1, '2018-03-20 23:24:09'),
+(43, 16, 1, '2018-03-20 23:29:37'),
+(44, 16, 1, '2018-03-20 23:36:30'),
+(45, 16, 1, '2018-03-20 23:38:43'),
+(46, 16, 1, '2018-03-20 23:40:21'),
+(47, 16, 1, '2018-03-20 23:44:07'),
+(48, 16, 1, '2018-03-21 01:07:27'),
+(49, 16, 1, '2018-03-21 01:09:48'),
+(50, 16, 1, '2018-03-21 01:21:37'),
+(51, 16, 1, '2018-03-21 01:33:31'),
+(52, 16, 1, '2018-03-21 01:36:52'),
+(53, 16, 1, '2018-03-21 01:44:09'),
+(54, 16, 1, '2018-03-21 01:45:06'),
+(55, 16, 1, '2018-03-21 01:46:40'),
+(56, 16, 1, '2018-03-21 01:48:18'),
+(57, 16, 1, '2018-03-21 01:57:29'),
+(58, 16, 1, '2018-03-21 01:58:33'),
+(59, 16, 1, '2018-03-21 02:02:10'),
+(60, 16, 1, '2018-03-21 02:02:59'),
+(61, 16, 1, '2018-03-21 02:05:16'),
+(62, 16, 1, '2018-03-23 13:25:34');
 
 -- --------------------------------------------------------
 
@@ -204,26 +267,39 @@ CREATE TABLE `perfil_contenido` (
 --
 
 INSERT INTO `perfil_contenido` (`id`, `modulo`, `controlador`, `accion`, `estado`, `perfil`, `fecha_creacion`) VALUES
-(588, 'admin', 'admin', 'admin', 1, 1, 1521077879),
-(589, 'maestros', 'maestros', 'maestros', 1, 1, 1521077879),
-(590, 'plugins', 'plugins', 'plugins', 1, 1, 1521077879),
-(591, 'plugins', 'plugins', 'index', 1, 1, 1521077879),
-(592, 'plugins', 'plugins', 'registrarplugin', 1, 1, 1521077879),
-(593, 'plugins', 'plugins', 'unregistrarplugin', 1, 1, 1521077879),
-(594, 'recordatorios', 'recordatorios', 'recordatorios', 1, 1, 1521077879),
-(595, 'recordatorios', 'recordatorios', 'index', 1, 1, 1521077879),
-(596, 'recordatorios', 'recordatorios', 'formularioSubir', 1, 1, 1521077879),
-(597, 'recordatorios', 'recordatorios', 'subir', 1, 1, 1521077879),
-(598, 'recordatorios', 'recordatorios', 'formularioOpciones', 1, 1, 1521077879),
-(599, 'usuarios', 'usuarios', 'usuarios', 1, 1, 1521077879),
-(600, 'usuarios', 'usuarios', 'index', 1, 1, 1521077879),
-(601, 'usuarios', 'usuarios', 'view', 1, 1, 1521077879),
-(602, 'usuarios', 'usuarios', 'create', 1, 1, 1521077879),
-(603, 'usuarios', 'usuarios', 'borrar', 1, 1, 1521077879),
-(604, 'usuarios', 'usuarios', 'perfil', 1, 1, 1521077880),
-(605, 'usuarios', 'usuarios', 'verperfil', 1, 1, 1521077880),
-(606, 'usuarios', 'usuarios', 'borrarperfil', 1, 1, 1521077880),
-(607, 'usuarios', 'usuarios', 'grupo', 1, 1, 1521077880);
+(608, 'admin', 'admin', 'admin', 1, 1, 1521468284),
+(609, 'maestros', 'maestros', 'maestros', 1, 1, 1521468284),
+(610, 'plugins', 'plugins', 'plugins', 1, 1, 1521468284),
+(611, 'plugins', 'plugins', 'index', 1, 1, 1521468284),
+(612, 'plugins', 'plugins', 'registrarplugin', 1, 1, 1521468284),
+(613, 'plugins', 'plugins', 'unregistrarplugin', 1, 1, 1521468284),
+(614, 'recordatorios', 'recordatorios', 'recordatorios', 1, 1, 1521468284),
+(615, 'recordatorios', 'recordatorios', 'index', 1, 1, 1521468284),
+(616, 'recordatorios', 'recordatorios', 'formularioSubir', 1, 1, 1521468284),
+(617, 'recordatorios', 'recordatorios', 'subir', 1, 1, 1521468284),
+(618, 'recordatorios', 'recordatorios', 'formularioOpciones', 1, 1, 1521468284),
+(619, 'recordatorios', 'recordatorios', 'enviarCorreos', 1, 1, 1521468284),
+(620, 'usuarios', 'usuarios', 'usuarios', 1, 1, 1521468285),
+(621, 'usuarios', 'usuarios', 'index', 1, 1, 1521468285),
+(622, 'usuarios', 'usuarios', 'view', 1, 1, 1521468285),
+(623, 'usuarios', 'usuarios', 'create', 1, 1, 1521468285),
+(624, 'usuarios', 'usuarios', 'borrar', 1, 1, 1521468285),
+(625, 'usuarios', 'usuarios', 'perfil', 1, 1, 1521468285),
+(626, 'usuarios', 'usuarios', 'verperfil', 1, 1, 1521468285),
+(627, 'usuarios', 'usuarios', 'borrarperfil', 1, 1, 1521468285),
+(628, 'usuarios', 'usuarios', 'grupo', 1, 1, 1521468285);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `recordatorios_enviados`
+--
+
+CREATE TABLE `recordatorios_enviados` (
+  `id_cita_recordatorio` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `tipo` varchar(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -306,6 +382,12 @@ ALTER TABLE `perfil_contenido`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `recordatorios_enviados`
+--
+ALTER TABLE `recordatorios_enviados`
+  ADD PRIMARY KEY (`id_cita_recordatorio`,`fecha`,`tipo`);
+
+--
 -- Indices de la tabla `sofint_users`
 --
 ALTER TABLE `sofint_users`
@@ -319,17 +401,17 @@ ALTER TABLE `sofint_users`
 -- AUTO_INCREMENT de la tabla `acciones`
 --
 ALTER TABLE `acciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `citas_recordatorios`
 --
 ALTER TABLE `citas_recordatorios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 --
 -- AUTO_INCREMENT de la tabla `perfil`
 --
@@ -339,12 +421,22 @@ ALTER TABLE `perfil`
 -- AUTO_INCREMENT de la tabla `perfil_contenido`
 --
 ALTER TABLE `perfil_contenido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=608;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=629;
 --
 -- AUTO_INCREMENT de la tabla `sofint_users`
 --
 ALTER TABLE `sofint_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `recordatorios_enviados`
+--
+ALTER TABLE `recordatorios_enviados`
+  ADD CONSTRAINT `recordatorios_enviados_ibfk_1` FOREIGN KEY (`id_cita_recordatorio`) REFERENCES `citas_recordatorios` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
