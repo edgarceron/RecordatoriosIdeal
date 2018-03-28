@@ -9,11 +9,12 @@ class EnviarSmsAction extends CAction
     public function run()
     {           
 		$criteria = new CDbCriteria();
-		$elibom = new ElibomClient('triforceofforest@hotmail.com', 'psM2Pj929O');
+		$this->elibom = new ElibomClient('triforceofforest@hotmail.com', 'psM2Pj929O');
 		$criteria->condition = "fecha > '".date("Y-m-d H:i:s")."'";
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
 		$recordatoriosEnviados = 0;
+		
 		foreach($citas as $recordatorio){
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
@@ -22,6 +23,7 @@ class EnviarSmsAction extends CAction
 				$recordatoriosEnviados++;
 			}
 		}
+		
 		echo $recordatoriosEnviados . ' recordatorios pendiente enviados';
     }
 	
@@ -55,11 +57,9 @@ class EnviarSmsAction extends CAction
 	 */
 	
 	public function enviarSms($recordatorio){
-		
-		$mail = new PHPMailer;
 		if($this->validarNumero($recordatorio['telefono'])){
 			$mensaje = $this->construirMensaje($recordatorio);
-			$deliveryId = $elibom->sendMessage($recordatorio['telefono'], $mensaje);
+			$deliveryId = $this->elibom->sendMessage($recordatorio['telefono'], $mensaje);
 			$this->registrarRecordatorioEnviado($recordatorio['id'], 'SMS');
 		}
 		return false;
@@ -78,7 +78,7 @@ class EnviarSmsAction extends CAction
 		$hora = $datetime->format('g:i A'); //10
 		$sede = $recordatorio['sede']; //20
 		$direccion = $recordatorio['direccion']; //20
-		$profesional = $recordatorio['profesional']; //30
+		$profesional = $recordatorio['nombre_profesional']; //30
 		$mensaje = 'Sr/a. ' . $nombre . ' su cita en fundacion ideal fecha: ' 
 		. $fecha . ' ' . $hora . 'Lugar: ' . $sede . ' ' . $direccion . ' con el Dr. ' . $profesional; 
 		return $mensaje;
