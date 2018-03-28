@@ -25,7 +25,7 @@ class SubirAction extends CAction
 				while(!feof($gestor)){
 					$linea = fgets($gestor);
 					$campos = explode(";",trim($linea));
-					if(count($campos)== 10){
+					if(count($campos)== 11){
 						
 						if($this->verificarValidez($campos)){
 							$exitosas++;
@@ -48,7 +48,10 @@ class SubirAction extends CAction
 						else{
 							$fallidas++;
 						}
-					}	
+					}
+					else{
+						$fallidas++;
+					}
 				}
 				echo "Existosas: " . $exitosas . " Fallidas: " . $fallidas;
 			}	
@@ -81,7 +84,6 @@ class SubirAction extends CAction
 			
 			$telefono_correcto = true;
 			$email_correcto = true;
-			
 			if(!is_numeric($campos[9])){
 				$telefono_correcto = false;
 			}

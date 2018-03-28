@@ -10,18 +10,19 @@ class EnviarCorreosAction extends CAction
     public function run()
     {           
 		$criteria = new CDbCriteria();
-		$criteria->condition = "fecha > ".date("Y-m-d");
+		$criteria->condition = "fecha > '".date("Y-m-d H:i:s")."'";
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
-		
+		$recordatoriosEnviados = 0;
 		foreach($citas as $recordatorio){
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
 				$this->enviarCorreo($recordatorio);
+				$recordatoriosEnviados++;
 			}
 		}
-		
+		echo $recordatoriosEnviados . ' recordatorios pendiente enviados';
     }
 	
 	/**
@@ -61,7 +62,8 @@ class EnviarCorreosAction extends CAction
 			$mail->IsSMTP();
 			$mail->Host = gethostbyname('smtp.gmail.com');
 			$mail->Port = 587;
-			$mail->SMTPDebug = 4;
+			$mail->CharSet = 'utf-8';
+			//$mail->SMTPDebug = 1;
 			$mail->SMTPOptions = array(
 				'ssl' => array(
 					'verify_peer' => false,
@@ -74,16 +76,15 @@ class EnviarCorreosAction extends CAction
 			$mail->Username = 'matsuurahana@gmail.com';
 			$mail->Password = 'yamashita.nanamI3191';
 			$mail->setFrom('miempresa@midominio.com', 'Recordatorio cita');
-			$mail->Subject = 'Recordatorio de cita ideal';
+			$mail->Subject = 'Recordatorio de cita fundación Ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
 			$mail->msgHTML($adjunto);
 			$mail->AddAddress($recordatorio['correo'], $recordatorio['nombre_paciente']);	
-			//$mail->AddBCC($recordatorio['correo'], $recordatorio['nombre_paciente']);
 			if(!$mail->send()) {
 			  echo '<br>Message was not sent.<br>';
 			  echo 'Mailer error: ' . $mail->ErrorInfo;
 			} else {
-			  echo '<br>Message has been sent.';
+			  $this->registrarRecordatorioEnviado($recordatorio['id'], 'E-MAIL');
 			}
 			return true;
 		}
@@ -97,6 +98,26 @@ class EnviarCorreosAction extends CAction
 	 */
 	public function construirMensaje($recordatorio){
 		return $this->controller->renderPartial('plantillaCorreo', array('recordatorio' => $recordatorio), true);
+	}
+	
+	/**
+	 * Guarda un registro en la tabla citas recordatorios 
+	 * indicando que se envio el correo.
+	 * @param $id Identificador del recordatorio
+	 * @param $tipo Tipo de recordatorio (E-MAIL, SMS, CALL)
+	 */
+	 
+	public function registrarRecordatorioEnviado($id, $tipo){
+		$model = new RecordatoriosEnviados;
+		$model->id_cita_recordatorio = $id;
+		$model->fecha = date('Y-m-d H:i:s');
+		$model->tipo = $tipo;
+		if($model->save()){
+			echo '<br>Recordatorio registrado.';
+		}
+		else{
+			echo '<br>Recordatorio no registrado.';
+		}
 	}
 }
 ?>
