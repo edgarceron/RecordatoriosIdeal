@@ -108,6 +108,15 @@ return array(
 			'charset' => 'utf8',
 		),
 		
+		'call_center'=>array(
+			'connectionString' => 'mysql:host=192.168.0.12;dbname=call_center',
+			'emulatePrepare' => true,
+			'username' => 'root',
+			'password' => 'firadankana',
+			'charset' => 'utf8',
+			'class' => 'CDbConnection',
+		),
+		
 	
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
