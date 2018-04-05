@@ -10,7 +10,8 @@ class EnviarCorreosAction extends CAction
     public function run()
     {           
 		$criteria = new CDbCriteria();
-		$criteria->condition = "fecha > '".date("Y-m-d H:i:s")."'";
+		$criteria->condition = "fecha > '".date("Y-m-d H:i:s")."' 
+		AND fecha < DATE_ADD('" . date("Y-m-d H:i:s") . "' , INTERVAL " . $this->getNumeroDiasAntes() . " DAY)";
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
 		$recordatoriosEnviados = 0;
@@ -33,6 +34,14 @@ class EnviarCorreosAction extends CAction
 	
 	public function getMaxNumeroRecordatorios(){
 		return Opciones::model()->find("opcion = 'NUM_RECORDATORIOS'")['valor'];
+	}
+	
+	/**
+	 * Obtiene el numero dias antes que se enviaran recordatorios
+	 * @return int Numero de dias
+	 */
+	public function getNumeroDiasAntes(){
+		return Opciones::model()->find("opcion = 'DIAS_ANTES'")['valor'];
 	}
 	
 	

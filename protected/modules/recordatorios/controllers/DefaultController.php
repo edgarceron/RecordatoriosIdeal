@@ -44,6 +44,7 @@ class DefaultController extends Controller
 			'formularioOpciones'=>'application.modules.'.$this->module->id.'.controllers.acciones.FormularioOpcionesAction',
 			'enviarCorreos'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarCorreosAction',
 			'enviarSms'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarSmsAction',
+			'enviarLlamadas'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarLlamadasAction',
 			
 		);
 	}
@@ -81,6 +82,11 @@ class DefaultController extends Controller
 			'allow', 
 			'actions' => array('enviarCorreos'),
 			'expression' => array(__CLASS__,'allowEnviarCorreos'),
+            ),
+			array(
+			'allow', 
+			'actions' => array('enviarLlamadas'),
+			'expression' => array(__CLASS__,'allowEnviarLlamadas'),
             ),
 			array(
 			'allow', 
@@ -284,6 +290,40 @@ class DefaultController extends Controller
 				$criteria_log = new CDbCriteria();
 				$criteria_log->compare('modulo', $modulo);
 				$criteria_log->compare('accion', 'enviarSms'); //Cambiar esto cada ves que lo copie para una accion diferente
+				$accion_log = Acciones::model()->find($criteria_log);
+				$log = new Logs;
+				$log->accion = $accion_log->id;
+				$log->usuario = Yii::app()->user->id;
+				$log->save();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function allowEnviarLlamadas()
+	{
+		//Descomentar esta parte cuando ya hayan agregado el modulo
+		if(Yii::app()->user->name != "Guest"){
+			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
+			$criteria = new CDbCriteria();            
+			$modulo = 'Recordatorios';
+			$criteria->compare('perfil', $usuario->perfil);
+			$criteria->compare('modulo', $modulo);
+			$criteria->compare('accion', 'enviarLlamadas');
+			$permisos = PerfilContenido::model()->find($criteria);
+			if(count($permisos) == 1)
+			{
+				$criteria_log = new CDbCriteria();
+				$criteria_log->compare('modulo', $modulo);
+				$criteria_log->compare('accion', 'enviarLlamadas'); //Cambiar esto cada ves que lo copie para una accion diferente
 				$accion_log = Acciones::model()->find($criteria_log);
 				$log = new Logs;
 				$log->accion = $accion_log->id;

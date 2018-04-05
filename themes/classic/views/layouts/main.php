@@ -118,7 +118,7 @@
 								</li>
                                                                 <?php if($tipo == -1) { ?>
 								<li>
-                                                                    <a href="<?php echo Yii::app()->createUrl("/site/login") ?>">Configuracion</a>
+                                                                    <a href="<?php echo Yii::app()->createUrl("/usuarios") ?>">Configuracion</a>
 								</li>
                                                                 <?php }?>
 							</ul>

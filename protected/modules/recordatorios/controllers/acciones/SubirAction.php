@@ -34,13 +34,13 @@ class SubirAction extends CAction
 							$citas_recordatorios->nombre_paciente = $campos[1];
 							$fecha = date_create($this->transformarFecha($campos[2]) . " " . $campos[3]);
 							$citas_recordatorios->fecha = $fecha->format('Y-m-d H:i:s');
-							echo $fecha->format('Y-m-d H:i:s');
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
-							//$citas_recordatorios->servicio = $campos[6];
+							$citas_recordatorios->servicio = $campos[6];
 							$citas_recordatorios->mensaje = $campos[7];
 							$citas_recordatorios->correo = $campos[8];
 							$citas_recordatorios->telefono = $campos[9];
+							$citas_recordatorios->sede = $campos[10];
 							$citas_recordatorios->save();
 							print_r($citas_recordatorios->getErrors());
 							echo "<br><br>";
@@ -58,6 +58,12 @@ class SubirAction extends CAction
 		}
 	}
 	
+	
+	/**
+	 * Transforma la fecha desde un formato dd/mm/aaaa a formato dd-mm-aaaa
+	 * @param $fecha String con la fecha en formato dd/mm/aaaa 
+	 * @return String con la fecha en formato dd-mm-aaaa
+	 */
 	public  function transformarFecha($fecha){
 		$campos = explode("/",$fecha);
 		$nuevaFecha = "";
@@ -73,6 +79,13 @@ class SubirAction extends CAction
 		return $nuevaFecha;
 	}
 	
+	/**
+	 * Verifica que los campos de un registro sean los indicados para guardar el recordatorio
+	 * Para que una fila sea valida los campos del 1 al 7 deben estar ocupados, y debe tener
+	 * al menos uno entre numero telefonico o correo electronico. 
+	 * @param $campos Array con la información de un fila
+	 * @return bool true si los datos son validos, false en caso contrario
+	 */
 	public function verificarValidez($campos){
 		for($i = 1; $i<=7; $i++){
 			if(trim($campos[$i]) == ''){
@@ -96,5 +109,8 @@ class SubirAction extends CAction
 			return false;
 		}
 	}
+	
+	
+	
 }
 ?>

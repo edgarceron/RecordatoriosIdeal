@@ -20,17 +20,17 @@ GRANT SELECT, INSERT, UPDATE ON call_center.* TO 'sofint'@'IP Sofint';
 FLUSH PRIVILEGES
 - Crear la tabla llamadas_recordatorios: 
 CREATE TABLE `llamadas_recordatorios` (
- `id` int(11) NOT NULL,
- `nombre_paciente` varchar(30) NOT NULL,
- `fecha` datetime NOT NULL,
- `nombre_profesional` varchar(30) NOT NULL,
- `direccion` varchar(100) NOT NULL,
- `servicio` varchar(40) NOT NULL,
- `mensaje` text NOT NULL,
- `correo` varchar(255) DEFAULT NULL,
- `telefono` varchar(10) DEFAULT NULL,
- `sede` varchar(30) DEFAULT NULL,
- PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL,
+  `nombre_paciente` varchar(30) NOT NULL,
+  `fecha` varchar(30) NOT NULL,
+  `nombre_profesional` varchar(30) NOT NULL,
+  `direccion` varchar(100) NOT NULL,
+  `servicio` varchar(40) NOT NULL,
+  `mensaje` text NOT NULL,
+  `correo` varchar(255) default NULL,
+  `telefono` varchar(10) default NULL,
+  `sede` varchar(30) default NULL,
+  PRIMARY KEY  (`id`)
 ) 
 
 - Crar el siguiente contexto
@@ -43,7 +43,7 @@ exten => 400,3,Hangup
 include => automsg
 
 - Reiniciar el servicio asterisk
-- Crear una cola con el numero 400 
+- Crear una cola con el numero 400 (U otro de estar ocupado, en tal caso cambiar el 400 en el contexto)
 - Añadir los agentes respectivos
 - Mover el archivo /additional/recordatorios.php al directorio /var/lib/asterisk/agi-bin/
 - Dar al archivo permisos 755
