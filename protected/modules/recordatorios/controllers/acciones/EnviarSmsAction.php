@@ -51,9 +51,9 @@ class EnviarSmsAction extends CAction
 	}
 	
 	/**
-	 * Envia un correo recordatorio con la información de la cita 
+	 * Envia un SMS recordatorio con la información de la cita 
 	 * @param $recordatorio información de la cita
-	 * @return bool true si el correo fue enviado, false en caso contrario
+	 * @return bool true si el SMS fue enviado, false en caso contrario
 	 */
 	
 	public function enviarSms($recordatorio){
@@ -61,6 +61,7 @@ class EnviarSmsAction extends CAction
 			$mensaje = $this->construirMensaje($recordatorio);
 			$deliveryId = $this->elibom->sendMessage($recordatorio['telefono'], $mensaje);
 			$this->registrarRecordatorioEnviado($recordatorio['id'], 'SMS');
+			if($deliveryId) return true;
 		}
 		return false;
 	}
