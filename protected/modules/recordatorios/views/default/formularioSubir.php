@@ -41,5 +41,11 @@ $this->breadcrumbs=array(
 				}
 			?>
         </div>
+		
+		<?php
+			if(isset($exitosas)){
+				echo "Subida completad: <br> Filas existosas " . $exitosas. "<br>Filas fallidas: " . $fallidas;
+			}
+		?>
     </div>
 </div>

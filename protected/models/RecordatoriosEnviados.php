@@ -16,6 +16,8 @@ class RecordatoriosEnviados extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public $enviados; 
+	 
 	public function tableName()
 	{
 		return 'recordatorios_enviados';

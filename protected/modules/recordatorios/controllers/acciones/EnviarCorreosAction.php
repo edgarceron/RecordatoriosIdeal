@@ -5,7 +5,7 @@ require 'vendor/autoload.php';
 class EnviarCorreosAction extends CAction
 {
 	
-	
+	public $recordatoriosEnviados;
     //Reemplazar Model por el modelo que corresponda al modulo
     public function run()
     {           
@@ -14,16 +14,15 @@ class EnviarCorreosAction extends CAction
 		AND fecha < DATE_ADD('" . date("Y-m-d H:i:s") . "' , INTERVAL " . $this->getNumeroDiasAntes() . " DAY)";
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
-		$recordatoriosEnviados = 0;
+		$this->recordatoriosEnviados = 0;
 		foreach($citas as $recordatorio){
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
 				$this->enviarCorreo($recordatorio);
-				$recordatoriosEnviados++;
 			}
 		}
-		echo $recordatoriosEnviados . ' recordatorios pendiente enviados';
+		echo $this->recordatoriosEnviados . ' recordatorios pendiente enviados';
     }
 	
 	/**
@@ -83,7 +82,7 @@ class EnviarCorreosAction extends CAction
 			$mail->SMTPSecure = "tls";
 			$mail->SMTPAuth = true;
 			$mail->Username = 'matsuurahana@gmail.com';
-			$mail->Password = 'yamashita.nanamI3191';
+			$mail->Password = 'takagi.miyU7918';
 			$mail->setFrom('miempresa@midominio.com', 'Recordatorio cita');
 			$mail->Subject = 'Recordatorio de cita fundación Ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
@@ -94,6 +93,7 @@ class EnviarCorreosAction extends CAction
 			  echo 'Mailer error: ' . $mail->ErrorInfo;
 			} else {
 			  $this->registrarRecordatorioEnviado($recordatorio['id'], 'E-MAIL');
+			  $this->recordatoriosEnviados++;
 			}
 			return true;
 		}

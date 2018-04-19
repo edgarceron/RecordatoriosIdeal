@@ -40,12 +40,12 @@ class DefaultController extends Controller
 		return array(
 			'index'=>'application.modules.'.$this->module->id.'.controllers.acciones.IndexAction',  
 			'formularioSubir'=>'application.modules.'.$this->module->id.'.controllers.acciones.FormularioSubirAction',
-			'subir'=>'application.modules.'.$this->module->id.'.controllers.acciones.SubirAction',
 			'formularioOpciones'=>'application.modules.'.$this->module->id.'.controllers.acciones.FormularioOpcionesAction',
 			'enviarCorreos'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarCorreosAction',
 			'enviarSms'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarSmsAction',
 			'enviarLlamadas'=>'application.modules.'.$this->module->id.'.controllers.acciones.EnviarLlamadasAction',
 			'guardarOpciones'=>'application.modules.'.$this->module->id.'.controllers.acciones.GuardarOpcionesAction',
+			'reporte'=>'application.modules.'.$this->module->id.'.controllers.acciones.ReporteAction',
 			
 		);
 	}
@@ -64,11 +64,6 @@ class DefaultController extends Controller
 			'actions' => array('formularioSubir'),
 			'expression' => array(__CLASS__,'allowFormularioSubir'),
 			),
-			array(
-			'allow', 
-			'actions' => array('subir'),
-			'expression' => array(__CLASS__,'allowSubir'),
-            ),
 			array(
 			'allow', 
 			'actions' => array('formularioOpciones'),
@@ -98,6 +93,11 @@ class DefaultController extends Controller
 			'allow', 
 			'actions' => array('guardarOpciones'),
 			'expression' => array(__CLASS__,'allowGuardarOpciones'),
+            ),
+			array(
+			'allow', 
+			'actions' => array('reporte'),
+			'expression' => array(__CLASS__,'allowReporte'),
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -143,40 +143,6 @@ class DefaultController extends Controller
 	}
 	
 	public function allowFormularioSubir()
-	{
-		//Descomentar esta parte cuando ya hayan agregado el modulo
-		if(Yii::app()->user->name != "Guest"){
-			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
-			$criteria = new CDbCriteria();            
-			$modulo = 'Recordatorios';
-			$criteria->compare('perfil', $usuario->perfil);
-			$criteria->compare('modulo', $modulo);
-			$criteria->compare('accion', 'subir'); //Cambiar esto cada ves que lo copie para una accion diferente
-			$permisos = PerfilContenido::model()->find($criteria);
-			if(count($permisos) == 1)
-			{
-				$criteria_log = new CDbCriteria();
-				$criteria_log->compare('modulo', $modulo);
-				$criteria_log->compare('accion', 'subir'); //Cambiar esto cada ves que lo copie para una accion diferente
-				$accion_log = Acciones::model()->find($criteria_log);
-				$log = new Logs;
-				$log->accion = $accion_log->id;
-				$log->usuario = Yii::app()->user->id;
-				$log->save();
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	public function allowSubir()
 	{
 		//Descomentar esta parte cuando ya hayan agregado el modulo
 		if(Yii::app()->user->name != "Guest"){
@@ -364,6 +330,40 @@ class DefaultController extends Controller
 				$criteria_log = new CDbCriteria();
 				$criteria_log->compare('modulo', $modulo);
 				$criteria_log->compare('accion', 'guardarOpciones'); //Cambiar esto cada ves que lo copie para una accion diferente
+				$accion_log = Acciones::model()->find($criteria_log);
+				$log = new Logs;
+				$log->accion = $accion_log->id;
+				$log->usuario = Yii::app()->user->id;
+				$log->save();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function allowReporte()
+	{
+		//Descomentar esta parte cuando ya hayan agregado el modulo
+		if(Yii::app()->user->name != "Guest"){
+			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
+			$criteria = new CDbCriteria();            
+			$modulo = 'Recordatorios';
+			$criteria->compare('perfil', $usuario->perfil);
+			$criteria->compare('modulo', $modulo);
+			$criteria->compare('accion', 'reporte');
+			$permisos = PerfilContenido::model()->find($criteria);
+			if(count($permisos) == 1)
+			{
+				$criteria_log = new CDbCriteria();
+				$criteria_log->compare('modulo', $modulo);
+				$criteria_log->compare('accion', 'reporte'); //Cambiar esto cada ves que lo copie para una accion diferente
 				$accion_log = Acciones::model()->find($criteria_log);
 				$log = new Logs;
 				$log->accion = $accion_log->id;

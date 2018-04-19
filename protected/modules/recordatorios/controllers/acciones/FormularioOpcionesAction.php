@@ -5,7 +5,7 @@ class FormularioOpcionesAction extends CAction
     public function run()
     {           
 	$num_recordatorios = Opciones::model()->findByPk('NUM_RECORDATORIOS');
-	$num_campana = Opciones::model()->findByPk('NUM_CAMPAÑA');
+	$num_campana = Opciones::model()->findByPk('NUM_CAMPANA');
 	$dias_antes = Opciones::model()->findByPk('DIAS_ANTES');
 	$campanas = Campaign::model()->findAll();
         $this->controller->render('opciones',array(
