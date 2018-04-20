@@ -139,7 +139,11 @@ $this->breadcrumbs=array(
 							),
 							array(
 								'name'=>'enviados',
+								'value'=>'CHtml::link($data->enviados,array("reporteDetallado",
+                                         "id"=>$data->id_cita_recordatorio))',
+								'type'=>'raw',
 							),
+							
 						),
 					)
 				);
