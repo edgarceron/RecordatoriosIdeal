@@ -37,7 +37,7 @@ class SubirAction extends CAction
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
 							$citas_recordatorios->servicio = $campos[6];
-							$citas_recordatorios->mensaje = $campos[7];
+							$citas_recordatorios->mensaje = utf8_encode($campos[7]);
 							$citas_recordatorios->correo = $campos[8];
 							$citas_recordatorios->telefono = $campos[9];
 							$citas_recordatorios->sede = $campos[10];

@@ -3,32 +3,32 @@
 <title>Recordatorio de cita</title>
 </head>
 <body>
-<div style="background: none repeat scroll 0 0 #00AFDA;
+<div style="background: none repeat scroll 0 0 #FDD828;
     font-family: arial;
     height: 25%;
     padding: 2%;
     text-align: center;
     width: 96%;">
-<h2>AQUI UNA IMAGEN</h2>
+<h2><img src="http://www.fundacionideal.org.co/sites/all/themes/clean_theme/images/fundacion-ideal.svg"/></h2>
 </div>
-<div style="background: none repeat scroll 0 0 #FFFFFF;
+<div style="background: none repeat scroll 0 0 #F1F2F2;
     font-family: arial;
     height: 30%;
     padding: 2%;
     text-align: center;
     width: 96%;">
-		Recordatorio de cita medica asignada</br><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ("Recordatorio de cita medica asignada") ?></h2></br><hr>
 		Fecha de cita: </br>
-		<p><?php echo $recordatorio['fecha'] ?> </p><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['fecha']) ?> </h2><hr>
 		Nombre afiliado: </br>
-		<p><?php echo $recordatorio['nombre_paciente'] ?> </p><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['nombre_paciente']) ?> </h2><hr>
 		Nombre profesional: </br>
-		<p><?php echo $recordatorio['nombre_profesional'] ?> </p><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['nombre_profesional']) ?> </h2><hr>
 		Nombre de la sede:</br>
-		<p><?php echo $recordatorio['sede'] ?> </p><hr>
-		<p><?php echo $recordatorio['direccion'] ?> </p><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['sede']) ?> </h2><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['direccion']) ?> </h2><hr>
 		Nombre del servicio:</br>
-		<p><?php echo $recordatorio['servicio'] ?> </p><hr><br> 
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['servicio']) ?> </h2><hr><br> 
 		<p> <?php echo $recordatorio['mensaje'] ?> </p><br>
 		<p> Nota, este mensaje se genero automaticamente por 
 		favor no responda </p>

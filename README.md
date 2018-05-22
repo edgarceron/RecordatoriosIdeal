@@ -33,18 +33,19 @@ CREATE TABLE `llamadas_recordatorios` (
   PRIMARY KEY  (`id`)
 ) 
 
-- Crar el siguiente contexto
+- Crar el siguiente contexto 
 [automsg] 
-exten => 400,1,Set(CHANNEL(language)=es)
+exten => 400,1,Set(CHANNEL(language)=es) 
 exten => 400,2,AGI(wakeup.php, ${UNIQUEID})  
 exten => 400,3,Hangup 
 
--Incluirlo en el [from-internal-custom]
+-Incluirlo en el [from-internal-custom] 
 include => automsg
 
 - Reiniciar el servicio asterisk
 - Crear una cola con el numero 400 (U otro de estar ocupado, en tal caso cambiar el 400 en el contexto)
 - Añadir los agentes respectivos
+- Crear una campaña de salida con la cola creada y la troncal que saque llamadas a celular
 - Mover el archivo /additional/recordatorios.php al directorio /var/lib/asterisk/agi-bin/
 - Dar al archivo permisos 755
 
@@ -62,3 +63,4 @@ Finalmente en el servidor de sofint:
 - Ingresar al archivo /protected/config/main.php
 - Ir al array application components y buscar el elemento call_center
 - Cambiar los datos de call center por los datos pertinentes de la base de datos del servidor elastix 
+- Crear una rutina en crontab que llame a los servicios 
