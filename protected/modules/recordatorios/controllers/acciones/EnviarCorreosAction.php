@@ -82,7 +82,7 @@ class EnviarCorreosAction extends CAction
 			$mail->SMTPSecure = "tls";
 			$mail->SMTPAuth = true;
 			$mail->Username = 'matsuurahana@gmail.com';
-			$mail->Password = 'takagi.miyU7918';
+			$mail->Password = '';
 			$mail->setFrom('miempresa@midominio.com', 'Recordatorio cita');
 			$mail->Subject = 'Recordatorio de cita fundación Ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
@@ -94,7 +94,7 @@ class EnviarCorreosAction extends CAction
 			} else {
 			  $this->registrarRecordatorioEnviado($recordatorio['id'], 'E-MAIL');
 			  $this->recordatoriosEnviados++;
-			}
+			}	
 			return true;
 		}
 		return false;
