@@ -17,7 +17,8 @@ class SubirAction extends CAction
 				$gestor = @fopen('./csv/'.$model->datos->name,'r');
 				$numeroLinea = 1;
 				$error = false;
-				$mensaje = "";
+				$mensaje_error = "";
+				$mensaje_filas = "";
 				$exitosas = 0;
 				$fallidas = 0;
 				
@@ -26,9 +27,7 @@ class SubirAction extends CAction
 					$linea = fgets($gestor);
 					$campos = explode(";",trim($linea));
 					if(count($campos)== 11){
-						
 						if($this->verificarValidez($campos)){
-							$exitosas++;
 							//Se crea el modelo para guardar la información del recordatorio
 							$citas_recordatorios = new CitasRecordatorios;
 							$citas_recordatorios->nombre_paciente = $campos[1];
@@ -41,19 +40,28 @@ class SubirAction extends CAction
 							$citas_recordatorios->correo = $campos[8];
 							$citas_recordatorios->telefono = $campos[9];
 							$citas_recordatorios->sede = $campos[10];
-							$citas_recordatorios->save();
-							print_r($citas_recordatorios->getErrors());
-							echo "<br><br>";
+							if( !($citas_recordatorios->save()) ){
+								$mensaje_error = $mensaje_error . print_r($citas_recordatorios->getErrors());
+								$mensaje_error = $mensaje_error . "<br>";
+							}
+							else{
+								$exitosas++;
+							}
 						}
 						else{
+							$mensaje_filas = $mensaje_filas . "Fila " . $numeroLinea . " campos erroneos<br>";
 							$fallidas++;
 						}
 					}
 					else{
+						$mensaje_filas = $mensaje_filas . "Fila " . $numeroLinea . " hacen falta campos<br>";
 						$fallidas++;
 					}
+					$numeroLinea++;
 				}
-				echo "Existosas: " . $exitosas . " Fallidas: " . $fallidas;
+				
+				$mensaje = "Recordatorios subidos exitosamente: " . $exitosas . "<br>Recordatorios no subidos: " . $fallidas;
+				$this->controller->render('confirmacion', array("mensaje" => $mensaje,"filas" => $mensaje_filas,"error" => $mensaje_error));
 			}	
 		}
 	}

@@ -248,12 +248,12 @@ class DefaultController extends Controller
 			}
 			else
 			{
-				return false;
+				return t;
 			}
 		}
 		else
 		{
-			return false;
+			return true;
 		}
 	}
 	
@@ -287,7 +287,7 @@ class DefaultController extends Controller
 		}
 		else
 		{
-			return false;
+			return true;
 		}
 	}
 	
@@ -321,7 +321,7 @@ class DefaultController extends Controller
 		}
 		else
 		{
-			return false;
+			return true;
 		}
 	}
 	

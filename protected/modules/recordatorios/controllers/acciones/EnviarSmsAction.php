@@ -1,6 +1,6 @@
 <?php
 require('elibom/elibom.php');
-
+require('nusoap/src/nusoap.php');
 class EnviarSmsAction extends CAction
 {
     //Reemplazar Model por el modelo que corresponda al modulo
@@ -20,12 +20,12 @@ class EnviarSmsAction extends CAction
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
-				$this->enviarSms($recordatorio);
+				$this->enviarSmsClaro($recordatorio);
 				$recordatoriosEnviados++;
 			}
 		}
 		
-		echo $recordatoriosEnviados . ' recordatorios pendiente enviados';
+		echo $recordatoriosEnviados . ' recordatorios de SMS pendiente enviados';
     }
 	
 	/**
@@ -59,12 +59,28 @@ class EnviarSmsAction extends CAction
 	}
 	
 	/**
+	 * Obtiene el numero de recordatorios enviados a la cita ingresada
+	 * @param $id id de la cita en la table citas_recordatorios
+	 * @return int Numero de recordatorios enviados a la cita con el id entregado
+	 */
+	 
+	public function getConsecutivoRecordatorio(){
+		return Opciones::model()->find("opcion = 'CONSECUTIVO'")['valor'];
+	}
+	
+	public function aumentarConsecutivoRecordatorio(){
+		$model = Opciones::model()->findByPk("CONSECUTIVO");
+		$model->valor = $model->valor + 1;
+		$model->save();
+	}
+	
+	/**
 	 * Envia un SMS recordatorio con la información de la cita 
 	 * @param $recordatorio información de la cita
 	 * @return bool true si el SMS fue enviado, false en caso contrario
 	 */
 	
-	public function enviarSms($recordatorio){
+	public function enviarSmsElibom($recordatorio){
 		if($this->validarNumero($recordatorio['telefono'])){
 			$mensaje = $this->construirMensaje($recordatorio);
 			$deliveryId = $this->elibom->sendMessage($recordatorio['telefono'], $mensaje);
@@ -88,10 +104,74 @@ class EnviarSmsAction extends CAction
 		$sede = $recordatorio['sede']; //20
 		$direccion = $recordatorio['direccion']; //20
 		$profesional = $recordatorio['nombre_profesional']; //30
-		$mensaje = 'Sr/a. ' . $nombre . ' su cita en fundacion ideal fecha: ' 
-		. $fecha . ' ' . $hora . 'Lugar: ' . $sede . ' ' . $direccion . ' con el Dr. ' . $profesional; 
+		$mensaje = 'Sr/a. ' . $nombre . ' recordamos su cita en fundacion ideal fecha: ' 
+		. $fecha . ' ' . $hora . ' Lugar: ' . $sede . ' ' . $direccion . ' con el Dr. ' . $profesional; 
 		return $mensaje;
 	}
+	
+	/**
+	 * Envia una solicitud SOAP de SMS a los servidores de claro
+	 * @param $recordatorio información de la cita
+	 * @return bool true si el SMS fue enviado, false en caso contrario
+	 */
+	public function enviarSmsClaro($recordatorio){
+		if($this->validarNumero($recordatorio['telefono'])){
+			
+			$wsdl = "https://www.gestormensajeriaadmin.com/RA/tggDataSoap?wsdl";
+			$telefono = "57" . $recordatorio['telefono'];
+			$mensaje = $this->construirMensaje($recordatorio);
+			$sender = "890330";
+			$requestid = $this->getConsecutivoRecordatorio();
+			$receiptRequest = "0";
+			$dataCoding = "0";
+			$login = "w460";
+			$password = "fjul10c4l0nj3";
+			/*
+			$params = array(
+				"subscriber" => $telefono,
+				"sender" => $sender,
+				"requestId" => $requestid,
+				"receiptRequest" => $receiptRequest,
+				"dataCoding" => $dataCoding,
+				"message" => $mensaje
+			);*/
+			
+			
+			$params = "
+			
+			<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tgg='http://ws.tiaxa.net/tggDataSoapService/'>
+				<soapenv:Header/>
+				<soapenv:Body>
+					<tgg:sendMessageRequest>
+						<subscriber>$telefono</subscriber>
+						<sender>$sender</sender>
+						<requestId>$requestid</requestId>
+						<receiptRequest>$receiptRequest</receiptRequest>
+						<dataCoding>$dataCoding</dataCoding>
+						<message>$mensaje</message>
+					</tgg:sendMessageRequest>
+				</soapenv:Body>
+			</soapenv:Envelope>
+			";
+
+			$soap_client = new nusoap_client($wsdl, true);
+			
+			$soap_client->setCredentials($login, $password, 'basic');
+			$soap_client->useHTTPPersistentConnection();
+			$soap_client->setUseCURL(false);
+			$soap_client->soap_defencoding = 'UTF-8'; //Fix encode erro, if you need
+			$soap_client->setEndpoint("https://www.gestormensajeriaadmin.com/RA/tggDataSoap?wsdl");
+			$soap_return = $soap_client->call("sendMessage", $params, "http://ws.tiaxa.net/tggDataSoapService/");
+			
+			if($soap_return['resultCode'] == 0){
+				$this->registrarRecordatorioEnviado($recordatorio['id'], 'SMS');
+				$this->aumentarConsecutivoRecordatorio();
+				return true;
+			}	
+		}			
+		return false;
+	}	
+	
 	
 	/**
 	 * Guarda un registro en la tabla citas recordatorios 

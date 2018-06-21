@@ -21,7 +21,7 @@ class EnviarLlamadasAction extends CAction
 			}
 		}
 		$this->activarCampana();
-		echo $recordatoriosEnviados . ' recordatorios pendiente enviados';
+		echo $recordatoriosEnviados . ' recordatorios por llamada pendientes registrados';
     }
 	
 	/**

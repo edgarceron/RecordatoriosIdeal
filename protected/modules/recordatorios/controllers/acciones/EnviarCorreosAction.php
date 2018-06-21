@@ -22,7 +22,7 @@ class EnviarCorreosAction extends CAction
 				$this->enviarCorreo($recordatorio);
 			}
 		}
-		echo $this->recordatoriosEnviados . ' recordatorios pendiente enviados';
+		echo $this->recordatoriosEnviados . ' recordatorios por correo pendientes enviados';
     }
 	
 	/**

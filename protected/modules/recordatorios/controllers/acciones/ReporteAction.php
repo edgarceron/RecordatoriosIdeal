@@ -35,13 +35,13 @@ class ReporteAction extends CAction
 		}
 		
 		//Construyendo comparador de fechas
-		if( $fecha_desde != "" &&  $fecha_hasta != ""){
+		if( isset($fecha_desde) && isset($fecha_hasta) && $fecha_desde != "" &&  $fecha_hasta != ""){
 			$comparador_fecha = 't1.fecha BETWEEN "'.$fecha_desde.'" AND DATE_ADD("'.$fecha_hasta.'", INTERVAL 86399 SECOND)';
 		}
-		else if($fecha_desde != ""){
+		else if(isset($fecha_desde) && $fecha_desde != ""){
 			$comparador_fecha = 't1.fecha > "'. $fecha_desde .'"';
 		}
-		else if($fecha_hasta != ""){
+		else if(isset($fecha_hasta) && $fecha_hasta != ""){
 			$comparador_fecha = 't1.fecha < "'. $fecha_hasta .'"';
 		}
 		
@@ -69,13 +69,12 @@ class ReporteAction extends CAction
 		}
 		
 		$criteria->group = 't.id_cita_recordatorio';
-		
+		$criteria->order = 't1.fecha DESC';
 		//Creando Data provider
 		$recordatorios_enviados = new RecordatoriosEnviados;
 		$reporte = new CActiveDataProvider($recordatorios_enviados, array('criteria' => $criteria));
 		$aux = $recordatorios_enviados->model()->findAll($criteria);
 		$atributos['reporte'] = $reporte;
-		$atributos['mierda'] = "mierda";
         $this->controller->render('reporte',$atributos);
     }
 }
