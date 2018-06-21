@@ -12,16 +12,21 @@ class EnviarLlamadasAction extends CAction
 		$citas = CitasRecordatorios::model()->findAll($criteria);
 		$max_numero_recordatorios = $this->getMaxNumeroRecordatorios();
 		$recordatoriosEnviados = 0;
+		$errores = 0;
 		foreach($citas as $recordatorio){
 			$id_cita = $recordatorio['id'];
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
-				$this->enviarLlamada($recordatorio);
-				$recordatoriosEnviados++;
+				if($this->enviarLlamada($recordatorio)){
+					$recordatoriosEnviados++;
+				}
+				else{
+					$errores++;
+				}
 			}
 		}
 		$this->activarCampana();
-		echo $recordatoriosEnviados . ' recordatorios por llamada pendientes registrados';
+		echo $recordatoriosEnviados . ' recordatorios por llamada pendientes registrados con ' . $errores . ' errores';
     }
 	
 	/**
@@ -70,12 +75,17 @@ class EnviarLlamadasAction extends CAction
 	 */
 	
 	public function enviarLlamada($recordatorio){
-		if(true || $this->validarNumero($recordatorio['telefono'])){
-			$id_campaign = $this->getIdCamapana();
-			$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono']);
-			$this->guardarLlamadaRecordatorio($id, $recordatorio);
-			$this->registrarRecordatorioEnviado($recordatorio['id'], 'CALL');
-			if($id) return true;
+		if($this->validarNumero($recordatorio['telefono'])){
+			try{
+				$id_campaign = $this->getIdCamapana();
+				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono']);
+				$this->guardarLlamadaRecordatorio($id, $recordatorio);
+				$this->registrarRecordatorioEnviado($recordatorio['id'], 'CALL');
+				if($id) return true;
+			}
+			catch(Exeption $e){
+					return false;
+			}	
 		}
 		return false;
 	}
@@ -169,11 +179,11 @@ class EnviarLlamadasAction extends CAction
 	
 	/*
 	 * @parama $direccion String con una direccion
-	 * @return String con todos los nuemro y palabras separados
+	 * @return String con todos los numeros y palabras separados
 	 */
 	public function separarLetrasDeNumeros($direccion){
 		$arr = str_split ($direccion);
-		for($i = 0; $i < count($arr); $i++){
+		for($i = 0; $i < count($arr) - 1; $i++){
 			if( $arr[$i] != " " && (is_numeric($arr[$i]) && ctype_alpha($arr[$i + 1])) || (ctype_alpha($arr[$i]) && is_numeric($arr[$i + 1])) ){
 				for($j = count($arr); $j > $i + 1; $j--){
 					$arr[$j] = $arr[$j - 1]; 
@@ -249,8 +259,8 @@ class EnviarLlamadasAction extends CAction
 	 */
 	public function activarCampana(){
 		$id_campaign = $this->getIdCamapana();
-		$model = Campaing::model()->findByPk($id_campaign);
-		$model['status'] = 'A';
+		$model = Campaign::model()->findByPk($id_campaign);
+		$model['estatus'] = 'A';
 		$model->save();
 	}
 	
@@ -260,7 +270,7 @@ class EnviarLlamadasAction extends CAction
 	 * @return String texto sin tildes
 	 */
 	public function removerTildes($texto){
-		$arr = str_split ($direccion);
+		$arr = str_split ($texto);
 		for($i = 0; $i < count($arr); $i++){
 			if($arr[$i] = 'á'){
 				$arr[$i] = 'a';
