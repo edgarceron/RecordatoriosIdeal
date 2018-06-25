@@ -68,7 +68,7 @@ class EnviarCorreosAction extends CAction
 		if(filter_var($recordatorio['correo'], FILTER_VALIDATE_EMAIL)){
 			$adjunto = $this->construirMensaje($recordatorio);
 			$mail->IsSMTP();
-			$mail->Host = gethostbyname('smtp.gmail.com');
+			$mail->Host = gethostbyname('smtp.office365.com');
 			$mail->Port = 587;
 			$mail->CharSet = 'utf-8';
 			//$mail->SMTPDebug = 1;
@@ -81,9 +81,9 @@ class EnviarCorreosAction extends CAction
 			);
 			$mail->SMTPSecure = "tls";
 			$mail->SMTPAuth = true;
-			$mail->Username = 'matsuurahana@gmail.com';
-			$mail->Password = '';
-			$mail->setFrom('miempresa@midominio.com', 'Recordatorio cita');
+			$mail->Username = 'recordatorios@fundacionideal.org.co';
+			$mail->Password = 'Ideal2018';
+			$mail->setFrom('recordatorios@fundacionideal.org.co', 'Recordatorio cita');
 			$mail->Subject = 'Recordatorio de cita fundación Ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
 			$mail->msgHTML($adjunto);
