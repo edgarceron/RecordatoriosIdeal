@@ -33,7 +33,9 @@ CREATE TABLE `llamadas_recordatorios` (
   PRIMARY KEY  (`id`)
 ) 
 
-- Crar el siguiente contexto 
+- Añadir el archivo additional/recordatorios.php a la carpeta /var/lib/asterisk/agi-bin 
+- Añadir las credenciales de la bd mysql del servidor asterisk
+- Crar el siguiente contexto, en el archivo etc/asterisk/extension-custom.conf: 
 [automsg] 
 exten => 400,1,Set(CHANNEL(language)=es) 
 exten => 400,2,AGI(wakeup.php, ${UNIQUEID})  
