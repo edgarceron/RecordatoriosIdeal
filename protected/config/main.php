@@ -109,10 +109,10 @@ return array(
 		),
 		
 		'call_center'=>array(
-			'connectionString' => 'mysql:host=192.168.0.12;dbname=call_center',
+			'connectionString' => 'mysql:host=10.222.12.11;dbname=call_center',
 			'emulatePrepare' => true,
 			'username' => 'sofint',
-			'password' => 'sofint',
+			'password' => 'sofintvozip',
 			'charset' => 'utf8',
 			'class' => 'CDbConnection',
 		),
