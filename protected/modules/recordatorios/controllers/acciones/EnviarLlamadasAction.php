@@ -155,7 +155,7 @@ class EnviarLlamadasAction extends CAction
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	/**
@@ -272,19 +272,19 @@ class EnviarLlamadasAction extends CAction
 	public function removerTildes($texto){
 		$arr = str_split ($texto);
 		for($i = 0; $i < count($arr); $i++){
-			if($arr[$i] = 'á'){
+			if($arr[$i] == 'á'){
 				$arr[$i] = 'a';
 			}
-			else if($arr[$i] = 'ó'){
+			else if($arr[$i] == 'ó'){
 				$arr[$i] = 'o';
 			}
-			else if($arr[$i] = 'é'){
+			else if($arr[$i] == 'é'){
 				$arr[$i] = 'e';
 			}
-			else if($arr[$i] = 'í'){
+			else if($arr[$i] =='í'){
 				$arr[$i] = 'i';
 			}
-			else if($arr[$i] = 'ú'){
+			else if($arr[$i] == 'ú'){
 				$arr[$i] = 'u';
 			}
 		}
