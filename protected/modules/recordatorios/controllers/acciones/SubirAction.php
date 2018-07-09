@@ -28,7 +28,7 @@ class SubirAction extends CAction
 					$campos = explode(";",trim($linea));
 					if(count($campos)== 11){
 						if($this->verificarValidez($campos)){
-							//Se crea el modelo para guardar la informaciÃ³n del recordatorio
+							//Se crea el modelo para guardar la información del recordatorio
 							$citas_recordatorios = new CitasRecordatorios;
 							$citas_recordatorios->nombre_paciente = $campos[1];
 							$fecha = date_create($this->transformarFecha($campos[2]) . " " . $campos[3]);
@@ -36,12 +36,15 @@ class SubirAction extends CAction
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
 							$citas_recordatorios->servicio = $campos[6];
+							$citas_recordatorios->mensaje = $campos[7];
+							$citas_recordatorios->mensaje = utf8_encode ($campos[7]);
+							/*
 							if(mb_detect_encoding ($campos[7]) == "UTF-8"){
 								$citas_recordatorios->mensaje = $campos[7];
 							}
 							else{
 								$citas_recordatorios->mensaje = utf8_encode ($campos[7]);
-							}
+							}*/
 							$citas_recordatorios->correo = $campos[8];
 							$citas_recordatorios->telefono = $campos[9];
 							$citas_recordatorios->sede = $campos[10];

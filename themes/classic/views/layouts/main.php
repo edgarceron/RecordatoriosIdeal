@@ -45,7 +45,7 @@
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						 <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></span><span class="icon-bar"></span><span class="icon-bar"></span>
                                         </button>
-                                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo_vozip.png"/></a>
+                                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/fundacion-ideal.svg"/></a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

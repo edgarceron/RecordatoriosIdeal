@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require('elibom/elibom.php');
 
 class EnviarLlamadasAction extends CAction
@@ -118,6 +118,7 @@ class EnviarLlamadasAction extends CAction
 		$llamadas_recordatorios['id'] = $id;
 		$llamadas_recordatorios['direccion'] = $this->transformarDireccion($recordatorio['direccion']);
 		$llamadas_recordatorios['fecha'] = $this->transformarFecha($recordatorio['fecha']);
+		$llamadas_recordatorios['mensaje'] = $this->removerTildes($llamadas_recordatorios['mensaje']);
 		if(!$llamadas_recordatorios->save()){
 			echo "<br>No se guardo $id<br>";
 		}
@@ -290,7 +291,6 @@ class EnviarLlamadasAction extends CAction
 		}
 		return implode($arr);
 	} 
-	
 }
 ?>
 

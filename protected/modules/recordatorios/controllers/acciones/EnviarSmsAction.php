@@ -102,10 +102,12 @@ class EnviarSmsAction extends CAction
 		$fecha = $datetime->format('Y-m-d'); //10
 		$hora = $datetime->format('g:i A'); //10
 		$sede = $recordatorio['sede']; //20
+		$servicio = $recordatorio['servicio'];
 		$direccion = $recordatorio['direccion']; //20
 		$profesional = $recordatorio['nombre_profesional']; //30
-		$mensaje = 'Sr/a. ' . $nombre . ' recordamos su cita en fundacion ideal fecha: ' 
-		. $fecha . ' ' . $hora . ' Lugar: ' . $sede . ' ' . $direccion . ' con el Dr. ' . $profesional; 
+		$mensaje = 'Sr/a. ' . $nombre . ' recordamos su cita de ' . $servicio . ' en Fundacion IDEAL el dia ' 
+		. $fecha . ' ' . $hora . ' Sede: ' . $sede . ' ' . $direccion 
+		. " recuerde valor a cancelar, sino puede asistir informar 4863732"; 
 		return $mensaje;
 	}
 	
@@ -153,7 +155,7 @@ class EnviarSmsAction extends CAction
 				</soapenv:Body>
 			</soapenv:Envelope>
 			";
-
+			
 			$soap_client = new nusoap_client($wsdl, true);
 			
 			$soap_client->setCredentials($login, $password, 'basic');
