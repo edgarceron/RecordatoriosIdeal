@@ -31,7 +31,12 @@ $this->breadcrumbs=array(
 			)
 		); 
 		?>
-	
+		<div class="col-lg-3">
+			<div class="form-group">
+				<?php echo CHtml::label('Buscar en rango de fechas de la cita: ', 'labelInfo',array('class'=>'label label-success'));?>
+			</div>
+		</div>
+		
 		<div class="col-lg-3">
 			<div class="form-group">
 				<?php echo CHtml::label('Desde', 'fecha_desde',array('class'=>'label label-success'));?>

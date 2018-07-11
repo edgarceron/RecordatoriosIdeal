@@ -67,4 +67,11 @@ Finalmente en el servidor de sofint:
 - Ingresar al archivo /protected/config/main.php
 - Ir al array application components y buscar el elemento call_center
 - Cambiar los datos de call center por los datos pertinentes de la base de datos del servidor elastix 
-- Crear una rutina en crontab que llame a los servicios 
+- Crear una rutina en crontab que llame a los servicios
+- Si se usa windows como sistema operativo, añadir PHP a las variables de entorno
+- Posteriormente usar el programador de tares para crear una rutina diaria usando php y como argumento /(ruta)/RecordatoriosIdeal/additional/enviarMensajes
+
+A la hora de subir recordatorios:
+- El archivo debe estar en formato csv, el caracter delimitador debe ser punto y coma(;)
+- La codificación del archivo debe ser UTF-8 (En otras palabras, al crear el csv desde excel solo se debe utilizar el formato "CSV (Delimitado por comas)"
+- El reporte de llamada solo muestra las llamadas que ya se han enviado al servidor asterisk 
