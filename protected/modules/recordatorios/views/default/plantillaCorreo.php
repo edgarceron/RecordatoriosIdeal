@@ -19,7 +19,7 @@
     width: 96%;">
 		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ("Recordatorio de cita medica asignada") ?></h2></br><hr>
 		Fecha de cita: </br>
-		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['fecha']) ?> </h2><hr>
+		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper (date('j/n/o',  strtotime($recordatorio['fecha']))) ?> </h2><hr>
 		Nombre afiliado: </br>
 		<h2 style="color: #58595B; font-size: 20px;"><?php echo strtoupper ($recordatorio['nombre_paciente']) ?> </h2><hr>
 		Nombre profesional: </br>

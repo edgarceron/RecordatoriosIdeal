@@ -188,10 +188,10 @@ class EnviarSmsAction extends CAction
 		$model->fecha = date('Y-m-d H:i:s');
 		$model->tipo = $tipo;
 		if($model->save()){
-			echo '<br>Recordatorio registrado.';
+			//echo '<br>Recordatorio registrado.';
 		}
 		else{
-			echo '<br>Recordatorio no registrado.';
+			//echo '<br>Recordatorio no registrado.';
 		}
 	}
 	

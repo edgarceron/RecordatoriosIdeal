@@ -80,7 +80,6 @@ class EnviarLlamadasAction extends CAction
 				$id_campaign = $this->getIdCamapana();
 				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono']);
 				$this->guardarLlamadaRecordatorio($id, $recordatorio);
-				$this->registrarRecordatorioEnviado($recordatorio['id'], 'CALL');
 				if($id) return true;
 			}
 			catch(Exeption $e){
@@ -111,6 +110,7 @@ class EnviarLlamadasAction extends CAction
 	 */
 	public function guardarLlamadaRecordatorio($id, $recordatorio){
 		$llamadas_recordatorios = new LlamadasRecordatorios;
+		$re = $this->registrarRecordatorioEnviado($recordatorio['id'], 'CALL');
 		$keys = array_keys($recordatorio->getAttributes());
 		foreach($keys as $k){
 			$llamadas_recordatorios[$k] = $this->removerTildes($recordatorio[$k]);
@@ -119,6 +119,8 @@ class EnviarLlamadasAction extends CAction
 		$llamadas_recordatorios['direccion'] = $this->transformarDireccion($recordatorio['direccion']);
 		$llamadas_recordatorios['fecha'] = $this->transformarFecha($recordatorio['fecha']);
 		$llamadas_recordatorios['mensaje'] = $this->removerTildes($llamadas_recordatorios['mensaje']);
+		$llamadas_recordatorios['id_cita_recordatorio'] = $re['id_cita_recordatorio'];
+		$llamadas_recordatorios['fecha_cita_recordatorio'] = $re['fecha'];
 		if(!$llamadas_recordatorios->save()){
 			echo "<br>No se guardo $id<br>";
 		}
@@ -136,12 +138,14 @@ class EnviarLlamadasAction extends CAction
 		$model->id_cita_recordatorio = $id;
 		$model->fecha = date('Y-m-d H:i:s');
 		$model->tipo = $tipo;
+		$model->recibida = "No";
 		if($model->save()){
-			echo '<br>Recordatorio registrado.';
+			//echo '<br>Recordatorio registrado.';
 		}
 		else{
-			echo '<br>Recordatorio no registrado.';
+			//echo '<br>Recordatorio no registrado.';
 		}
+		return $model;
 	}
 	
 	/**

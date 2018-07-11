@@ -32,6 +32,8 @@ $this->breadcrumbs=array(
 			<br>
 			<?php echo CHtml::link('Reporte recordatorios',array('reporte')); ?>
 			<br>
+			<?php echo CHtml::link('Reporte de llamadas',array('reporteLlamadas')); ?>
+			<br>
 			<?php echo CHtml::link('Opciones',array('formularioOpciones')); ?>
         </div>
     </div>

@@ -14,6 +14,8 @@
  * @property string $correo
  * @property string $telefono
  * @property string $sede
+ * @property integer $id_cita_recordatorio
+ * @property string $fecha_cita_recordatorio
  */
 class LlamadasRecordatorios extends CActiveRecord
 {
@@ -34,15 +36,16 @@ class LlamadasRecordatorios extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, nombre_paciente, fecha, nombre_profesional, direccion, servicio, mensaje', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
-			array('nombre_paciente, nombre_profesional, sede', 'length', 'max'=>30),
+			array('id, id_cita_recordatorio', 'numerical', 'integerOnly'=>true),
+			array('nombre_paciente, fecha, nombre_profesional, sede', 'length', 'max'=>30),
 			array('direccion', 'length', 'max'=>100),
 			array('servicio', 'length', 'max'=>40),
 			array('correo', 'length', 'max'=>255),
 			array('telefono', 'length', 'max'=>10),
+			array('fecha_cita_recordatorio', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nombre_paciente, fecha, nombre_profesional, direccion, servicio, mensaje, correo, telefono, sede', 'safe', 'on'=>'search'),
+			array('id, nombre_paciente, fecha, nombre_profesional, direccion, servicio, mensaje, correo, telefono, sede, id_cita_recordatorio, fecha_cita_recordatorio', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +76,8 @@ class LlamadasRecordatorios extends CActiveRecord
 			'correo' => 'Correo',
 			'telefono' => 'Telefono',
 			'sede' => 'Sede',
+			'id_cita_recordatorio' => 'Id Cita Recordatorio',
+			'fecha_cita_recordatorio' => 'Fecha Cita Recordatorio',
 		);
 	}
 
@@ -104,6 +109,8 @@ class LlamadasRecordatorios extends CActiveRecord
 		$criteria->compare('correo',$this->correo,true);
 		$criteria->compare('telefono',$this->telefono,true);
 		$criteria->compare('sede',$this->sede,true);
+		$criteria->compare('id_cita_recordatorio',$this->id_cita_recordatorio);
+		$criteria->compare('fecha_cita_recordatorio',$this->fecha_cita_recordatorio,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

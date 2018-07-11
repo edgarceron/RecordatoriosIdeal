@@ -33,6 +33,9 @@ $this->breadcrumbs=array(
 							array(
 								'name'=>'tipo',
 							),
+							array(
+								'name'=>'recibida',
+							),
 						),
 					)
 				);

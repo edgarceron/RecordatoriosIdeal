@@ -2,7 +2,6 @@
         // create curl resource
 		try{
 			
-			/*
 			$ch = curl_init();
 			// set url
 			curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1/RecordatoriosIdeal/index.php/recordatorios/default/enviarSms");
@@ -14,7 +13,7 @@
 			print_r($output);
 			// close curl resource to free up system resources
 			curl_close($ch);   	
-			*/
+			
 			$ch2 = curl_init();
 			// set url
 			curl_setopt($ch2, CURLOPT_URL, "http://127.0.0.1/RecordatoriosIdeal/index.php/recordatorios/default/enviarCorreos");

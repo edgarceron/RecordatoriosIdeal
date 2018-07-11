@@ -34,6 +34,7 @@ class ReporteAction extends CAction
 			$atributos['correo'] = "";
 		}
 		
+		
 		//Construyendo comparador de fechas
 		if( isset($fecha_desde) && isset($fecha_hasta) && $fecha_desde != "" &&  $fecha_hasta != ""){
 			$comparador_fecha = 't1.fecha BETWEEN "'.$fecha_desde.'" AND DATE_ADD("'.$fecha_hasta.'", INTERVAL 86399 SECOND)';

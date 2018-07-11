@@ -48,6 +48,8 @@ class DefaultController extends Controller
 			'reporte'=>'application.modules.'.$this->module->id.'.controllers.acciones.ReporteAction',
 			'reporteDetallado'=>'application.modules.'.$this->module->id.'.controllers.acciones.ReporteDetalladoAction',
 			'subir'=>'application.modules.'.$this->module->id.'.controllers.acciones.SubirAction',
+			'registrarLlamada' => 'application.modules.'.$this->module->id.'.controllers.acciones.RegistrarLlamadaAction',
+			'reporteLlamadas' => 'application.modules.'.$this->module->id.'.controllers.acciones.ReporteLlamadasAction',
 		);
 	}
         
@@ -109,6 +111,16 @@ class DefaultController extends Controller
 			'allow', 
 			'actions' => array('subir'),
 			'expression' => array(__CLASS__,'allowSubir'),
+			),
+			array(
+			'allow', 
+			'actions' => array('registrarLlamada'),
+			'expression' => array(__CLASS__,'allowRegistrarLlamada'),
+			),
+			array(
+			'allow', 
+			'actions' => array('reporteLlamadas'),
+			'expression' => array(__CLASS__,'allowReporteLlamadas'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -437,6 +449,74 @@ class DefaultController extends Controller
 			$criteria->compare('perfil', $usuario->perfil);
 			$criteria->compare('modulo', $modulo);
 			$criteria->compare('accion', 'subir'); //Cambiar esto cada ves que lo copie para una accion diferente
+			$permisos = PerfilContenido::model()->find($criteria);
+			if(count($permisos) == 1)
+			{
+				$criteria_log = new CDbCriteria();
+				$criteria_log->compare('modulo', $modulo);
+				$criteria_log->compare('accion', 'subir'); //Cambiar esto cada ves que lo copie para una accion diferente
+				$accion_log = Acciones::model()->find($criteria_log);
+				$log = new Logs;
+				$log->accion = $accion_log->id;
+				$log->usuario = Yii::app()->user->id;
+				$log->save();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function allowRegistrarLlamada()
+	{
+		//Descomentar esta parte cuando ya hayan agregado el modulo
+		if(Yii::app()->user->name != "Guest"){
+			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
+			$criteria = new CDbCriteria();            
+			$modulo = 'Recordatorios';
+			$criteria->compare('perfil', $usuario->perfil);
+			$criteria->compare('modulo', $modulo);
+			$criteria->compare('accion', 'registrarLlamada'); //Cambiar esto cada ves que lo copie para una accion diferente
+			$permisos = PerfilContenido::model()->find($criteria);
+			if(count($permisos) == 1)
+			{
+				$criteria_log = new CDbCriteria();
+				$criteria_log->compare('modulo', $modulo);
+				$criteria_log->compare('accion', 'subir'); //Cambiar esto cada ves que lo copie para una accion diferente
+				$accion_log = Acciones::model()->find($criteria_log);
+				$log = new Logs;
+				$log->accion = $accion_log->id;
+				$log->usuario = Yii::app()->user->id;
+				$log->save();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public function allowReporteLlamadas()
+	{
+		//Descomentar esta parte cuando ya hayan agregado el modulo
+		if(Yii::app()->user->name != "Guest"){
+			$usuario = SofintUsers::model()->findByPk(Yii::app()->user->id);
+			$criteria = new CDbCriteria();            
+			$modulo = 'Recordatorios';
+			$criteria->compare('perfil', $usuario->perfil);
+			$criteria->compare('modulo', $modulo);
+			$criteria->compare('accion', 'reporteLlamadas'); //Cambiar esto cada ves que lo copie para una accion diferente
 			$permisos = PerfilContenido::model()->find($criteria);
 			if(count($permisos) == 1)
 			{

@@ -1,10 +1,10 @@
 #!/usr/bin/php -q
-<?php 
+<?php
 	include "phpagi.php";//llama el phpagi
 	$dbase='call_center';
 	$servidor='localhost';
 	$usuario='root';
-	$pass='firadankana';
+	$pass='rVozip301';
 	$link = mysql_connect($servidor,$usuario,$pass) or die("DB Connection Error");
 	mysql_select_db($dbase) or die(mysqlerror()."Error: Cannot open database");
 	
@@ -36,6 +36,8 @@
 		$correo = $fila['correo'];
 		$telefono = $fila['telefono'];
 		$sede = $fila['sede'];
+		$id_cita_recordatorio = $fila['id_cita_recordatorio'];
+		$fecha_cita_recordatorio = $fila['fecha_cita_recordatorio'];
 	}
 	fclose($fas);
 	date_default_timezone_set('America/Bogota');
@@ -58,6 +60,17 @@
 	$agi->text2wav($direccion);//direccion
 	$agi->text2wav("y recuerde");//y recuerde
 	$agi->text2wav($mensaje);
+	
+	$ch = curl_init();
+	// set url
+	curl_setopt($ch, CURLOPT_URL, "http://10.222.12.90/RecordatoriosIdeal/index.php/recordatorios/default/registrarLlamada?id=$id_cita_recordatorio&fecha=$fecha_cita_recordatorio");
+	//return the transfer as a string
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_exec($ch);
+	// $output contains the output string
+	$output = curl_exec($ch);
+	// close curl resource to free up system resources
+	curl_close($ch);  
 	
 	/*$men = explode(' ', $mensaje);
 	foreach($men as $n){

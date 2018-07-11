@@ -19,7 +19,7 @@ CREATE USER 'sofint'@'IP Sofint' IDENTIFIED BY 'contraseña';
 GRANT SELECT, INSERT, UPDATE ON call_center.* TO 'sofint'@'IP Sofint';
 FLUSH PRIVILEGES
 - Crear la tabla llamadas_recordatorios: 
-CREATE TABLE `llamadas_recordatorios` (
+ CREATE TABLE `llamadas_recordatorios` (
   `id` int(11) NOT NULL,
   `nombre_paciente` varchar(30) NOT NULL,
   `fecha` varchar(30) NOT NULL,
@@ -27,11 +27,13 @@ CREATE TABLE `llamadas_recordatorios` (
   `direccion` varchar(100) NOT NULL,
   `servicio` varchar(40) NOT NULL,
   `mensaje` text NOT NULL,
-  `correo` varchar(255) default NULL,
-  `telefono` varchar(10) default NULL,
-  `sede` varchar(30) default NULL,
-  PRIMARY KEY  (`id`)
-) 
+  `correo` varchar(255) DEFAULT NULL,
+  `telefono` varchar(10) DEFAULT NULL,
+  `sede` varchar(30) DEFAULT NULL,
+  `id_cita_recordatorio` int(11) DEFAULT NULL,
+  `fecha_cita_recordatorio` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
 
 - Añadir el archivo additional/recordatorios.php a la carpeta /var/lib/asterisk/agi-bin 
 - Añadir las credenciales de la bd mysql del servidor asterisk
