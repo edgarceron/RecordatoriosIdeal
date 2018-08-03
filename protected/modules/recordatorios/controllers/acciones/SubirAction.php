@@ -32,7 +32,10 @@ class SubirAction extends CAction
 							$citas_recordatorios = new CitasRecordatorios;
 							$citas_recordatorios->nombre_paciente = $campos[1];
 							$fecha = date_create($this->transformarFecha($campos[2]) . " " . $campos[3]);
-							$citas_recordatorios->fecha = $fecha->format('Y-m-d H:i:s');
+							if(!is_bool($fecha))
+							{
+								$citas_recordatorios->fecha = $fecha->format('Y-m-d H:i:s');
+							}
 							$citas_recordatorios->nombre_profesional = $campos[4];
 							$citas_recordatorios->direccion = $campos[5];
 							$citas_recordatorios->servicio = $campos[6];
@@ -49,6 +52,8 @@ class SubirAction extends CAction
 							$citas_recordatorios->telefono = $campos[9];
 							$citas_recordatorios->sede = $campos[10];
 							if( !($citas_recordatorios->save()) ){
+								$mensaje_filas = $mensaje_filas . "Fila " . $numeroLinea . " campos erroneos<br>";
+								$fallidas++;
 								$mensaje_error = $mensaje_error . print_r($citas_recordatorios->getErrors());
 								$mensaje_error = $mensaje_error . "<br>";
 							}
