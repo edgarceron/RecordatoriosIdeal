@@ -21,6 +21,7 @@ class EnviarCorreosAction extends CAction
 			if($enviados < $max_numero_recordatorios){
 				$this->enviarCorreo($recordatorio);
 			}
+			//echo $this->recordatoriosEnviados . "<br>";
 		}
 		echo $this->recordatoriosEnviados . ' recordatorios por correo pendientes enviados';
     }
@@ -65,7 +66,9 @@ class EnviarCorreosAction extends CAction
 	public function enviarCorreo($recordatorio){
 		
 		$mail = new PHPMailer;
+		
 		if(filter_var($recordatorio['correo'], FILTER_VALIDATE_EMAIL)){
+			
 			$adjunto = $this->construirMensaje($recordatorio);
 			$mail->IsSMTP();
 			$mail->Host = gethostbyname('smtp.office365.com');

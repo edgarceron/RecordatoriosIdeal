@@ -36,7 +36,7 @@ class CitasRecordatorios extends CActiveRecord
 			array('nombre_paciente, nombre_profesional, sede', 'length', 'max'=>30),
 			array('direccion', 'length', 'max'=>100),
 			array('correo', 'length', 'max'=>255),
-			array('telefono', 'length', 'max'=>10),
+			array('telefono', 'length', 'max'=>12),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, nombre_paciente, fecha, nombre_profesional, direccion, mensaje, correo, telefono, sede', 'safe', 'on'=>'search'),

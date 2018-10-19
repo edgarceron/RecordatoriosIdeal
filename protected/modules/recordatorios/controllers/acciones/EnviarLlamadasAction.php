@@ -78,7 +78,7 @@ class EnviarLlamadasAction extends CAction
 		if($this->validarNumero($recordatorio['telefono'])){
 			try{
 				$id_campaign = $this->getIdCamapana();
-				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono']);
+				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono'], '80');
 				$this->guardarLlamadaRecordatorio($id, $recordatorio);
 				if($id) return true;
 			}
@@ -93,12 +93,13 @@ class EnviarLlamadasAction extends CAction
 	 * Guarda la llamada en la tabla calls
 	 * @param $id_campaign Id de la camapaña a la cual pertenece la llamada
 	 * @param $phone Numero telefonico al que deberia lanzarce la llamada
+	 * @param $prefijo String con una cadena que se usara como prefijo del telefono
 	 * @return El id del registro creado
 	 */
-	public function guardarLlamada($id_campaign, $phone){
+	public function guardarLlamada($id_campaign, $phone, $prefijo = ''){
 		$calls = new Calls;
 		$calls['id_campaign'] = $id_campaign;
-		$calls['phone'] = $phone;
+		$calls['phone'] = $prefijo . $phone;
 		$calls->save();
 		return $calls['id'];
 	}

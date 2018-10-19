@@ -44,16 +44,20 @@
 	
 	$agi->text2wav("Cordial Saludo"); //$agi->exec("Playback","custom/saludo"); //Cordial saludo 
 	$nomp = explode(' ', $nombre_paciente);
+	$nomcomp = '';
 	foreach($nomp as $n){
-		$agi->text2wav($n); //Nombre
+		$nomcomp = $nomcomp . " " . $n; 
 	}
+	$agi->text2wav($nomcomp); //Nombre
 	$agi->text2wav("Nos contactamos para recordarle su cita el dia");//Nos contactamos para recordarle su cita el dia
 	$agi->text2wav($fecha);//dia
 	$agi->text2wav("con el doctor");//con el doctor
 	$nomp = explode(' ', $nombre_profesional);
+	$nomcomp = '';
 	foreach($nomp as $n){
-		$agi->text2wav($n); //doctor
+		$nomcomp = $nomcomp . " " . $n; 
 	}
+	$agi->text2wav($nomcomp); //Doctor
 	$agi->text2wav("en la sede");//en la sede
 	$agi->text2wav($sede);//sede
 	$agi->text2wav("con direccion");//con direccion

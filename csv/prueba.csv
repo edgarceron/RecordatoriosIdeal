@@ -1,2 +1,4 @@
-ï»¿No;Nombre del Usuario;FECHA;HORA;Nombre del Profesional;Direccion de la sede;Nombre del Servicio;MENSAJE;CORREO;TELEFONO;SEDE
-1;Edgar Ceron;2018-07-20;07:30;OSCAR CONDE;CALLE 50 #10A-08;FISIATRIA;Presentar Documento de identidad, AutorizaciÃ³n, Historia clÃ­nica, copago o cuota moderadora.  Llegar 15 minutos antes;maurinin@yahoo.com;3176483290;VILLA
+Consecutivo;Nombre Paciente;Fecha cita;Hora cita;Profesional;Direccon;Servicio;Mensaje;Correo;Numero tel;Sede
+1;EDGAR CERON;15/08/2018;07:30;EMILIO CUELLAR ;CL 50 # 10 A 08;CONSULTA PSICOLOGIA;Presentar Documento de identidad, Autorización, Historia clínica, copago o cuota moderadora.  Llegar 20 minutos antes ;maurinin@yahoo.com;3166493483;VILLA COLOMBIA
+2;MAURICION CERON;15/08/2018;07:45;EMILIO CUELLAR ;CL 50 # 10 A 08;CONSULTA PSICOLOGIA;Hola;edgar.ceron@correounivalle.edu.co;;VILLA COLOMBIA
+3;ALEJANDRA DELGADO;15/08/2018;08:00;EMILIO CUELLAR ;CL 50 # 10 A 08;CONSULTA PSICOLOGIA;Hola;;;VILLA COLOMBIA

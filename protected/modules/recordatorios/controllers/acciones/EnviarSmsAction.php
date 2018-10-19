@@ -5,6 +5,7 @@ class EnviarSmsAction extends CAction
 {
     //Reemplazar Model por el modelo que corresponda al modulo
 	public $elibom;
+	public $recordatoriosEnviados;
 	
     public function run()
     {           
@@ -21,7 +22,6 @@ class EnviarSmsAction extends CAction
 			$enviados = $this->getNumeroRecordatoriosEnviados($id_cita);
 			if($enviados < $max_numero_recordatorios){
 				$this->enviarSmsClaro($recordatorio);
-				$recordatoriosEnviados++;
 			}
 		}
 		
@@ -98,6 +98,8 @@ class EnviarSmsAction extends CAction
 	public function construirMensaje($recordatorio){
 		$campos = explode(" ",trim($recordatorio['nombre_paciente']));
 		$nombre = $campos[0]; //15
+		$nomp = explode(' ', $nombre);
+		$nombre = $nomp[0];
 		$datetime = new DateTime($recordatorio['fecha']);
 		$fecha = $datetime->format('Y-m-d'); //10
 		$hora = $datetime->format('g:i A'); //10
@@ -105,9 +107,9 @@ class EnviarSmsAction extends CAction
 		$servicio = $recordatorio['servicio'];
 		$direccion = $recordatorio['direccion']; //20
 		$profesional = $recordatorio['nombre_profesional']; //30
-		$mensaje = 'Sr/a. ' . $nombre . ' recordamos su cita de ' . $servicio . ' en Fundacion IDEAL el dia ' 
+		$mensaje = 'Sr/a. ' . $nombre . ' su cita de ' . $servicio . ' en Fundacion IDEAL es el dia ' 
 		. $fecha . ' ' . $hora . ' Sede: ' . $sede . ' ' . $direccion 
-		. " recuerde valor a cancelar, sino puede asistir informar 4863732"; 
+		. " recuerde cuota moderadora, sino asistirá informar 4863732"; 
 		return $mensaje;
 	}
 	
@@ -123,6 +125,7 @@ class EnviarSmsAction extends CAction
 			$telefono = "57" . $recordatorio['telefono'];
 			$mensaje = $this->construirMensaje($recordatorio);
 			$sender = "890330";
+			$this->aumentarConsecutivoRecordatorio();
 			$requestid = $this->getConsecutivoRecordatorio();
 			$receiptRequest = "0";
 			$dataCoding = "0";
@@ -163,11 +166,11 @@ class EnviarSmsAction extends CAction
 			$soap_client->setUseCURL(false);
 			$soap_client->soap_defencoding = 'UTF-8'; //Fix encode erro, if you need
 			$soap_client->setEndpoint("https://www.gestormensajeriaadmin.com/RA/tggDataSoap?wsdl");
-			$soap_return = $soap_client->call("sendMessage", $params, "http://ws.tiaxa.net/tggDataSoapService/");
-			
+			$soap_return = $soap_client->call("sendMessage", $params);
+			echo $telefono . " " . $soap_return['resultCode'] . '<br>';
 			if($soap_return['resultCode'] == 0){
 				$this->registrarRecordatorioEnviado($recordatorio['id'], 'SMS');
-				$this->aumentarConsecutivoRecordatorio();
+				$this->recordatoriosEnviados++;
 				return true;
 			}	
 		}			

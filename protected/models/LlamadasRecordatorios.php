@@ -41,7 +41,7 @@ class LlamadasRecordatorios extends CActiveRecord
 			array('direccion', 'length', 'max'=>100),
 			array('servicio', 'length', 'max'=>40),
 			array('correo', 'length', 'max'=>255),
-			array('telefono', 'length', 'max'=>10),
+			array('telefono', 'length', 'max'=>12),
 			array('fecha_cita_recordatorio', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

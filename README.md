@@ -28,7 +28,7 @@ FLUSH PRIVILEGES
   `servicio` varchar(40) NOT NULL,
   `mensaje` text NOT NULL,
   `correo` varchar(255) DEFAULT NULL,
-  `telefono` varchar(10) DEFAULT NULL,
+  `telefono` varchar(12) DEFAULT NULL,
   `sede` varchar(30) DEFAULT NULL,
   `id_cita_recordatorio` int(11) DEFAULT NULL,
   `fecha_cita_recordatorio` date DEFAULT NULL,

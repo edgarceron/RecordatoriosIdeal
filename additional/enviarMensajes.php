@@ -13,7 +13,13 @@
 			print_r($output);
 			// close curl resource to free up system resources
 			curl_close($ch);   	
-			
+		}
+		catch (Exception $e) {
+				echo "???";
+				echo $e->getMessage();
+		}
+
+		try{
 			$ch2 = curl_init();
 			// set url
 			curl_setopt($ch2, CURLOPT_URL, "http://127.0.0.1/RecordatoriosIdeal/index.php/recordatorios/default/enviarCorreos");
@@ -24,7 +30,13 @@
 			print_r($output);
 			// close curl resource to free up system resources
 			curl_close($ch2);   
-			
+		}
+		catch (Exception $e) {
+				echo "???";
+				echo $e->getMessage();
+		}
+
+		try{
 			$ch3 = curl_init();
 			// set url
 			curl_setopt($ch3, CURLOPT_URL, "http://127.0.0.1/RecordatoriosIdeal/index.php/recordatorios/default/enviarLlamadas");
