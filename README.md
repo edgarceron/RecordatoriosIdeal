@@ -20,6 +20,8 @@ GRANT SELECT, INSERT, UPDATE ON call_center.* TO 'sofint'@'IP Sofint';
 FLUSH PRIVILEGES;
 
 - Crear la tabla llamadas_recordatorios: 
+
+```
  CREATE TABLE `llamadas_recordatorios` (
   `id` int(11) NOT NULL,
   `nombre_paciente` varchar(60) NOT NULL,
@@ -35,19 +37,25 @@ FLUSH PRIVILEGES;
   `fecha_cita_recordatorio` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
+```
 
 - Añadir el archivo additional/recordatorios.php a la carpeta /var/lib/asterisk/agi-bin 
-- Añadir las credenciales de la bd mysql del servidor asterisk, esto se hace modificando las siguientes lineas el archivo recordatorios.php:
-	- $dbase='call_center';
-	- $servidor='direccion ip del servidor';
-	- $usuario='usuario del servidor, usualmente root';
-	- $pass='contraseña para el usuario asignado';
+- Añadir las credenciales de la bd mysql del servidor asterisk, esto se hace modificando las siguientes lineas el archivo recordatorios.php:	
+```
+	$dbase='call_center';
+	$servidor='direccion ip del servidor';
+	$usuario='usuario del servidor, usualmente root';
+	$pass='contraseña para el usuario asignado';
 	
+```
 - Crar el siguiente contexto, en el archivo etc/asterisk/extension-custom.conf: 
+```
 [automsg] 
 exten => 400,1,Set(CHANNEL(language)=es) 
 exten => 400,2,AGI(wakeup.php, ${UNIQUEID})  
 exten => 400,3,Hangup 
+
+```
 
 -Incluirlo en el [from-internal-custom] 
 include => automsg
@@ -64,8 +72,15 @@ En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten 
 - En caso de no estar instalado el festival: https://www.voztovoice.org/?q=node/97
 - En caso de que el text2wav no este convirtiendo los archicos txt a wav: 
 	* Entrar /var/lib/asterisk/agi-bin/phpagi.php
-	* Buscar la linea shell_exec("{$this->config['festival']['text2wave']} -F $frequency -o $fname.wav $fname.txt");
-	* Reemplazarla por shell_exec("/usr/bin/text2wave -F $frequency -o $fname.wav $fname.txt");
+	* Buscar la linea 	
+```
+	shell_exec("{$this->config['festival']['text2wave']} -F $frequency -o $fname.wav $fname.txt");
+```
+	* Reemplazarla por 
+```
+	shell_exec("/usr/bin/text2wave -F $frequency -o $fname.wav $fname.txt");
+	
+```
 	* Guardar
 
 Finalmente en el servidor de sofint:
