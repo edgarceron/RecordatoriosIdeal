@@ -109,7 +109,7 @@ class EnviarSmsAction extends CAction
 		$profesional = $recordatorio['nombre_profesional']; //30
 		$mensaje = 'Sr/a. ' . $nombre . ' su cita de ' . $servicio . ' en Fundacion IDEAL es el dia ' 
 		. $fecha . ' ' . $hora . ' Sede: ' . $sede . ' ' . $direccion 
-		. " recuerde cuota moderadora, sino asistirá informar 4863732"; 
+		. " recuerde cuota moderadora, sino puede asistir informar 4863732"; 
 		return $mensaje;
 	}
 	

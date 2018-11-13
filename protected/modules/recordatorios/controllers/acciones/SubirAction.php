@@ -75,8 +75,14 @@ class SubirAction extends CAction
 				
 				$mensaje = "Recordatorios subidos exitosamente: " . $exitosas . "<br>Recordatorios no subidos: " . $fallidas;
 				$this->controller->render('confirmacion', array("mensaje" => $mensaje,"filas" => $mensaje_filas,"error" => $mensaje_error));
+			}
+			else{
+				$this->controller->render('confirmacion', array("mensaje" => "Ocurrio un error inesperado", "filas" => "","error" => "Revise la extensión del archivo debe ser csv"));
 			}	
 		}
+		else{
+			echo 'Ups, no deberias estar aquí';
+		}	
 	}
 	
 	

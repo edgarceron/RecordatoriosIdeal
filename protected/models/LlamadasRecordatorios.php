@@ -37,7 +37,9 @@ class LlamadasRecordatorios extends CActiveRecord
 		return array(
 			array('id, nombre_paciente, fecha, nombre_profesional, direccion, servicio, mensaje', 'required'),
 			array('id, id_cita_recordatorio', 'numerical', 'integerOnly'=>true),
-			array('nombre_paciente, fecha, nombre_profesional, sede', 'length', 'max'=>30),
+			array('sede', 'length', 'max'=>30),
+			array('fecha', 'length', 'max'=>50),
+			array('nombre_paciente, nombre_profesional', 'length', 'max'=>60),
 			array('direccion', 'length', 'max'=>100),
 			array('servicio', 'length', 'max'=>40),
 			array('correo', 'length', 'max'=>255),

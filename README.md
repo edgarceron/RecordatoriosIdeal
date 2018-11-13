@@ -14,16 +14,17 @@ Ademas de un archivos SQL con las declaraciones necesarias para la base de datos
 En elastix:
 - Abrir el archivo /etc/my.cnf y comentar o eleminar la linea que dice old_passwords = 1
 - Reiniciar el servicio de mysql: service mysqld restart
-- Crear un usuario para que el sofint acceda a la base de datos: 
+- Crear un usuario para que el sofint acceda a la base de datos, reemplazar "IP Sofint" por la ip del host donde esta instalada el aplicativo, reemplazar "Contraseña" por la contraseña deseada: 
 CREATE USER 'sofint'@'IP Sofint' IDENTIFIED BY 'contraseña';
 GRANT SELECT, INSERT, UPDATE ON call_center.* TO 'sofint'@'IP Sofint';
-FLUSH PRIVILEGES
+FLUSH PRIVILEGES;
+
 - Crear la tabla llamadas_recordatorios: 
  CREATE TABLE `llamadas_recordatorios` (
   `id` int(11) NOT NULL,
-  `nombre_paciente` varchar(30) NOT NULL,
-  `fecha` varchar(30) NOT NULL,
-  `nombre_profesional` varchar(30) NOT NULL,
+  `nombre_paciente` varchar(60) NOT NULL,
+  `fecha` varchar(50) NOT NULL,
+  `nombre_profesional` varchar(60) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   `servicio` varchar(40) NOT NULL,
   `mensaje` text NOT NULL,
@@ -36,7 +37,12 @@ FLUSH PRIVILEGES
 )
 
 - Añadir el archivo additional/recordatorios.php a la carpeta /var/lib/asterisk/agi-bin 
-- Añadir las credenciales de la bd mysql del servidor asterisk
+- Añadir las credenciales de la bd mysql del servidor asterisk, esto se hace modificando las siguientes lineas el archivo recordatorios.php:
+	- $dbase='call_center';
+	- $servidor='direccion ip del servidor';
+	- $usuario='usuario del servidor, usualmente root';
+	- $pass='contraseña para el usuario asignado';
+	
 - Crar el siguiente contexto, en el archivo etc/asterisk/extension-custom.conf: 
 [automsg] 
 exten => 400,1,Set(CHANNEL(language)=es) 
@@ -48,7 +54,6 @@ include => automsg
 
 - Reiniciar el servicio asterisk
 - Crear una cola con el numero 400 (U otro de estar ocupado, en tal caso cambiar el 400 en el contexto)
-- Añadir los agentes respectivos
 - Crear una campaña de salida con la cola creada y la troncal que saque llamadas a celular
 - Mover el archivo /additional/recordatorios.php al directorio /var/lib/asterisk/agi-bin/
 - Dar al archivo permisos 755
@@ -65,11 +70,19 @@ En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten 
 
 Finalmente en el servidor de sofint:
 - Ingresar al archivo /protected/config/main.php
-- Ir al array application components y buscar el elemento call_center
-- Cambiar los datos de call center por los datos pertinentes de la base de datos del servidor elastix 
-- Crear una rutina en crontab que llame a los servicios
+- Ir al array application components y buscar el elemento call_center, se debe ver algo como esto:
+	- 'call_center'=>array(
+	-		'connectionString' => 'mysql:host='Dirección IP del servidor elastix sin comillas';dbname=call_center',
+	-		'emulatePrepare' => true,
+	-		'username' => 'sofint',
+	-		'password' => 'contraseña creada en el mysql del servidor asterisk',
+	-		'charset' => 'utf8',
+	-		'class' => 'CDbConnection',
+	-	),
+- Cambiar los datos de call_center por los datos pertinentes de la base de datos del servidor elastix (IP, contraseña)
 - Si se usa windows como sistema operativo, añadir PHP a las variables de entorno
-- Posteriormente usar el programador de tares para crear una rutina diaria usando php y como argumento /(ruta)/RecordatoriosIdeal/additional/enviarMensajes
+- Posteriormente usar el programador de tares para crear una rutina diaria usando php y como argumento /(ip)/RecordatoriosIdeal/additional/enviarMensajes
+- En caso de existir un prefijo para las llamadas a celular ejecutar la siguiente linea en el mysql del servidor(Puede ser desde phpmyadmin): UPDATE `opciones` SET `valor` = 'Numero del prefijo a utilizar' WHERE `opciones`.`opcion` = 'PREFIJO'
 
 A la hora de subir recordatorios:
 - El archivo debe estar en formato csv, el caracter delimitador debe ser punto y coma(;)

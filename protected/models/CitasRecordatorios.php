@@ -33,7 +33,8 @@ class CitasRecordatorios extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('nombre_paciente, fecha, nombre_profesional, direccion, mensaje', 'required'),
-			array('nombre_paciente, nombre_profesional, sede', 'length', 'max'=>30),
+			array('sede', 'length', 'max'=>30),
+			array('nombre_paciente, nombre_profesional', 'length', 'max'=>60),
 			array('direccion', 'length', 'max'=>100),
 			array('correo', 'length', 'max'=>255),
 			array('telefono', 'length', 'max'=>12),

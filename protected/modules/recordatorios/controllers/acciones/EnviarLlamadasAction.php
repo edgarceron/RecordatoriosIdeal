@@ -47,6 +47,9 @@ class EnviarLlamadasAction extends CAction
 		return Opciones::model()->find("opcion = 'NUM_CAMPAÑA'")['valor'];
 	}
 	
+	public function getPrefijo(){
+		return Opciones::model()->find("opcion = 'PREFIJO'")['valor'];
+	}
 	
 	/**
 	 * Obtiene el numero de recordatorios enviados a la cita ingresada
@@ -78,7 +81,7 @@ class EnviarLlamadasAction extends CAction
 		if($this->validarNumero($recordatorio['telefono'])){
 			try{
 				$id_campaign = $this->getIdCamapana();
-				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono'], '80');
+				$id = $this->guardarLlamada($id_campaign, $recordatorio['telefono'], $this->getPrefijo());
 				$this->guardarLlamadaRecordatorio($id, $recordatorio);
 				if($id) return true;
 			}
@@ -124,6 +127,7 @@ class EnviarLlamadasAction extends CAction
 		$llamadas_recordatorios['fecha_cita_recordatorio'] = $re['fecha'];
 		if(!$llamadas_recordatorios->save()){
 			echo "<br>No se guardo $id<br>";
+			//print_r($llamadas_recordatorios->getErrors());
 		}
 	}
 	
