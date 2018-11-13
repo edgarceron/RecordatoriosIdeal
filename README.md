@@ -71,17 +71,16 @@ En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten 
 
 - En caso de no estar instalado el festival: https://www.voztovoice.org/?q=node/97
 - En caso de que el text2wav no este convirtiendo los archicos txt a wav: 
-	* Entrar /var/lib/asterisk/agi-bin/phpagi.php
-	* Buscar la linea 	
+		
 ```
+	#Entrar /var/lib/asterisk/agi-bin/phpagi.php
+	#Buscar la linea:
 	shell_exec("{$this->config['festival']['text2wave']} -F $frequency -o $fname.wav $fname.txt");
-```
-	* Reemplazarla por 
-```
+	#Reemplazarla por: 
 	shell_exec("/usr/bin/text2wave -F $frequency -o $fname.wav $fname.txt");
 	
 ```
-	* Guardar
+
 
 Finalmente en el servidor de sofint:
 - Ingresar al archivo /protected/config/main.php
