@@ -73,12 +73,11 @@ En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten 
 - En caso de que el text2wav no este convirtiendo los archicos txt a wav: 
 		
 ```
-	#Entrar /var/lib/asterisk/agi-bin/phpagi.php
-	#Buscar la linea:
-	shell_exec("{$this->config['festival']['text2wave']} -F $frequency -o $fname.wav $fname.txt");
-	#Reemplazarla por: 
-	shell_exec("/usr/bin/text2wave -F $frequency -o $fname.wav $fname.txt");
-	
+#Entrar /var/lib/asterisk/agi-bin/phpagi.php
+#Buscar la linea:
+shell_exec("{$this->config['festival']['text2wave']} -F $frequency -o $fname.wav $fname.txt");
+#Reemplazarla por: 
+shell_exec("/usr/bin/text2wave -F $frequency -o $fname.wav $fname.txt");
 ```
 
 
