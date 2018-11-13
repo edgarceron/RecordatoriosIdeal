@@ -71,14 +71,14 @@ En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten 
 Finalmente en el servidor de sofint:
 - Ingresar al archivo /protected/config/main.php
 - Ir al array application components y buscar el elemento call_center, se debe ver algo como esto:
-	- 'call_center'=>array(
-	-		'connectionString' => 'mysql:host='Dirección IP del servidor elastix sin comillas';dbname=call_center',
-	-		'emulatePrepare' => true,
-	-		'username' => 'sofint',
-	-		'password' => 'contraseña creada en el mysql del servidor asterisk',
-	-		'charset' => 'utf8',
-	-		'class' => 'CDbConnection',
-	-	),
+		'call_center'=>array(
+			'connectionString' => 'mysql:host='Dirección IP del servidor elastix sin comillas';dbname=call_center',
+			'emulatePrepare' => true,
+			'username' => 'sofint',
+			'password' => 'contraseña creada en el mysql del servidor asterisk',
+			'charset' => 'utf8',
+			'class' => 'CDbConnection',
+		),
 - Cambiar los datos de call_center por los datos pertinentes de la base de datos del servidor elastix (IP, contraseña)
 - Si se usa windows como sistema operativo, añadir PHP a las variables de entorno
 - Posteriormente usar el programador de tares para crear una rutina diaria usando php y como argumento /(ip)/RecordatoriosIdeal/additional/enviarMensajes
