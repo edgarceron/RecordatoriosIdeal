@@ -14,6 +14,8 @@ Ademas de un archivos SQL con las declaraciones necesarias para la base de datos
 En elastix:
 - Abrir el archivo /etc/my.cnf y comentar o eleminar la linea que dice old_passwords = 1
 - Reiniciar el servicio de mysql: service mysqld restart
+- En el servidor elastix/isabel ingresar a mysql "mysql -u root -p"
+- Ingresar a la base de datos "use call_center"
 - Crear un usuario para que el sofint acceda a la base de datos, reemplazar "IP Sofint" por la ip del host donde esta instalada el aplicativo, reemplazar "Contraseña" por la contraseña deseada: 
 CREATE USER 'sofint'@'IP Sofint' IDENTIFIED BY 'contraseña';
 GRANT SELECT, INSERT, UPDATE ON call_center.* TO 'sofint'@'IP Sofint';
@@ -36,10 +38,10 @@ FLUSH PRIVILEGES;
   `id_cita_recordatorio` int(11) DEFAULT NULL,
   `fecha_cita_recordatorio` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-)
+);
 ```
 
-- Añadir el archivo additional/recordatorios.php a la carpeta /var/lib/asterisk/agi-bin 
+- Añadir el archivo additional/recordatorios.php a la carpeta del servidor elastix/isabel:  /var/lib/asterisk/agi-bin 
 - Añadir las credenciales de la bd mysql del servidor asterisk, esto se hace modificando las siguientes lineas el archivo recordatorios.php:	
 ```
 	$dbase='call_center';
@@ -62,6 +64,7 @@ include => automsg
 
 - Reiniciar el servicio asterisk
 - Crear una cola con el numero 400 (U otro de estar ocupado, en tal caso cambiar el 400 en el contexto)
+- Añadir un numero de agente (Que no exista) en la Cola creada
 - Crear una campaña de salida con la cola creada y la troncal que saque llamadas a celular
 - Mover el archivo /additional/recordatorios.php al directorio /var/lib/asterisk/agi-bin/
 - Dar al archivo permisos 755
@@ -70,6 +73,7 @@ Nota: De no ejecutarse el agi correctamente reemplazar los contenidos del archiv
 En el contexto cambiar la linea exten => 400,n,AGI(recordatorios.php) por exten => 400,n,AGI(wakeup.php)
 
 - En caso de no estar instalado el festival: https://www.voztovoice.org/?q=node/97
+- Instalar las librerias y hacer las configuraciones para que quede en español: https://www.voztovoice.org/?q=node/97
 - En caso de que el text2wav no este convirtiendo los archicos txt a wav: 
 		
 ```
@@ -97,8 +101,9 @@ Finalmente en el servidor de sofint:
 
 ```
 - Cambiar los datos de call_center por los datos pertinentes de la base de datos del servidor elastix (IP, contraseña)
-- Si se usa windows como sistema operativo, añadir PHP a las variables de entorno
+- Si se usa windows como sistema operativo, añadir PHP a las variables de entorno: https://medium.com/@jonDotsoy/crear-nueva-variable-de-entorno-para-el-comando-php-u-otro-software-81a8604537ed
 - Posteriormente usar el programador de tares para crear una rutina diaria usando php y como argumento /(ip)/RecordatoriosIdeal/additional/enviarMensajes
+- Ingresar a http://localhost/RecordatoriosIdeal/index.php/recordatorios/default/formularioOpciones y seleccionar la campaña que se creo para los recordatorios de llamadas. 
 - En caso de existir un prefijo para las llamadas a celular ejecutar la siguiente linea en el mysql del servidor(Puede ser desde phpmyadmin): UPDATE `opciones` SET `valor` = 'Numero del prefijo a utilizar' WHERE `opciones`.`opcion` = 'PREFIJO'
 
 A la hora de subir recordatorios:
