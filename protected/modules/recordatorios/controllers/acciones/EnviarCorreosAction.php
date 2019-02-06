@@ -85,7 +85,7 @@ class EnviarCorreosAction extends CAction
 			$mail->SMTPSecure = "tls";
 			$mail->SMTPAuth = true;
 			$mail->Username = 'recordatorios_ideal@fundacionideal.org.co';
-			$mail->Password = '';
+			$mail->Password = 'Ide@l2018-.';
 			$mail->setFrom('recordatorios_ideal@fundacionideal.org.co', 'Recordatorio cita');
 			$mail->Subject = 'Recordatorio de cita fundación Ideal';
 			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';

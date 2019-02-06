@@ -66,7 +66,7 @@ class ReporteAction extends CAction
 		}
 		
 		if(isset($correo)){
-			$criteria->addCondition('t1.correo LIKE "%'. $correo . "%'");
+			$criteria->addCondition('t1.correo LIKE "%'. $correo . '%"');
 		}
 		
 		$criteria->group = 't.id_cita_recordatorio';

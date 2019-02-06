@@ -97,9 +97,9 @@ class EnviarSmsAction extends CAction
 	 */
 	public function construirMensaje($recordatorio){
 		$campos = explode(" ",trim($recordatorio['nombre_paciente']));
-		$nombre = $campos[0]; //15
+		$nombre = $campos[0]; 
 		$nomp = explode(' ', $nombre);
-		$nombre = $nomp[0];
+		$nombre = $nomp[0]; //15
 		$datetime = new DateTime($recordatorio['fecha']);
 		$fecha = $datetime->format('Y-m-d'); //10
 		$hora = $datetime->format('g:i A'); //10
@@ -107,9 +107,9 @@ class EnviarSmsAction extends CAction
 		$servicio = $recordatorio['servicio'];
 		$direccion = $recordatorio['direccion']; //20
 		$profesional = $recordatorio['nombre_profesional']; //30
-		$mensaje = 'Sr/a. ' . $nombre . ' su cita de ' . $servicio . ' en Fundacion IDEAL es el dia ' 
-		. $fecha . ' ' . $hora . ' Sede: ' . $sede . ' ' . $direccion 
-		. " recuerde cuota moderadora, sino puede asistir informar 4863732"; 
+		$mensaje = 'Sr/a. ' . $nombre . ' su cita de ' . $servicio . ' en Fundacion IDEAL el dia ' 
+		. $fecha . ' ' . $hora . ' Sede ' . $sede . ' ' . $direccion 
+		. " para eps recuerde cuota moderadora, cancelar:4863732"; 
 		return $mensaje;
 	}
 	
@@ -172,7 +172,10 @@ class EnviarSmsAction extends CAction
 				$this->registrarRecordatorioEnviado($recordatorio['id'], 'SMS');
 				$this->recordatoriosEnviados++;
 				return true;
-			}	
+			}
+			else{
+				return false;
+			}			
 		}			
 		return false;
 	}	
